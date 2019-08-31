@@ -1,6 +1,9 @@
 package Chap_17_Futures
 
-import scala.concurrent.Future
+import scala.annotation.tailrec
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
+import scala.io.StdIn
 
 /** Write a method -
   * Future[T] repeat(action: => T, until: T => Boolean)
@@ -9,6 +12,45 @@ import scala.concurrent.Future
   * from the console, and a function that simulates a validity check by sleeping for a second and
   * then checking that the password is "secret". Hint: Use recursion.*/
 
+//Layman translation - basically play action() async till 'until' is true. Also, looks like result of 'action' should go into 'until'.
+// The result is Future[T] - return the future that for which 'until' is true!
+object Six extends App {
+  import scala.concurrent.ExecutionContext.Implicits._
+
+  def action() = StdIn.readLine("Enter password: ")
+  def until(password: String): Boolean = {
+    password == "secret"
+  }
+
+  val result = recursiverepeat(action, until)
+
+  private def recursiverepeat[T](action:() => T, until: T => Boolean): Future[T] = {
+    val actionF = Future {action()}
+    val resultF = actionF.flatMap(t => Future {until(t)})
+
+    val result = Await.result(resultF, Duration.Inf)
+    if (result) actionF else recursiverepeat(action, until)
+  }
+
+  //Another solution on internet
+  def repeat[T](action: => T, until: T => Boolean): Future[T] = {
+    @tailrec def doActionUntil(): T = {
+      val result = action
+      if (until(result)) result
+      else doActionUntil()
+    }
+
+    Future[T] {
+      doActionUntil()
+    }
+  }
+
+  //Difference? -
+  //None. Both the solutions actually invoke the functions and wait for result at every call. So, no difference efficiency wise
+}
+
+
+/** Some Notes! on map, flatMap, etc. -  */
 //Note - For the layman, whenever the book says "composing functions", it simply means "chaining functions". Science
 // of any kind simply loves terminology and students should know how to simplify it!
 
@@ -75,18 +117,4 @@ stringF is of type Future[Future[String]] while flatStringF is of type Future[St
 When you use for comprehensions with Futures, under the hood flatMap is being used together with map.*/
 
 //4. Note that flatMap always expects futures in its input, while when we use map, we can have input as future or simply any function
-
-
-object Six extends App {
-
-  private def nonRecursiverepeat[T](action:() => T, until: T => Boolean): Future[T] = {
-    while(true) {
-
-    }
-  }
-
-  private def recursiverepeat[T](action:() => T, until: T => Boolean): Future[T] = {
-    null
-  }
-
-}
+//5. The above explanations combined with what the books says and exercises is simply the better way to understand this.

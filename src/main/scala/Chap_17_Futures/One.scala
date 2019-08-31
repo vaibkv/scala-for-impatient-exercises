@@ -1,5 +1,4 @@
 /*Consider the expression
-Click here to view code image
 for (n1 <- Future { Thread.sleep(1000) ; 2 }
   n2 <- Future { Thread.sleep(1000); 40 })
 println(n1 + n2)
