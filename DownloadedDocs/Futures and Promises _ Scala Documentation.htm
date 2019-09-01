@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)https://docs.scala-lang.org/overviews/core/futures.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>
+      Futures and Promises | 
+      
+      Scala Documentation
+    </title>
+    
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:site_name" content="Scala Documentation">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="/overviews/core/futures.html">
+    <meta property="og:image" content="/resources/img/scala-spiral-3d-2-toned-down.png">
+    <meta property="og:title" content="Futures and Promises">
+    
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@scala_lang">
+    <meta name="twitter:creator" content="@scala_lang">
+    <meta name="twitter:title" content="Futures and Promises">
+    
+
+    <link rel="icon" type="image/png" href="https://docs.scala-lang.org/resources/favicon.ico">
+    <link rel="shortcut icon" type="image/png" href="https://docs.scala-lang.org/resources/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://docs.scala-lang.org/resources/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://docs.scala-lang.org/resources/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://docs.scala-lang.org/resources/favicon-16x16.png">
+    <link rel="manifest" href="https://docs.scala-lang.org/resources/site.webmanifest">
+    <link rel="mask-icon" href="https://docs.scala-lang.org/resources/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#15a9ce">
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="./Futures and Promises _ Scala Documentation_files/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <!-- Custom stylesheet -->
+    <link href="./Futures and Promises _ Scala Documentation_files/unslider-dots.css" rel="stylesheet" type="text/css">
+    <link href="./Futures and Promises _ Scala Documentation_files/unslider.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./Futures and Promises _ Scala Documentation_files/highlightjs.css" type="text/css">
+    <link rel="stylesheet" href="./Futures and Promises _ Scala Documentation_files/style.css" type="text/css">
+    <link rel="stylesheet" href="./Futures and Promises _ Scala Documentation_files/monospace.css" type="text/css">
+
+    <!-- Atom feeds -->
+    <link rel="alternate" type="application/atom+xml" title="News Feed" href="http://scala-lang.org/feed/index.xml">
+    <link rel="alternate" type="application/atom+xml" title="Blog Feed" href="http://scala-lang.org/feed/blog.xml">
+
+    <!-- Algolia stylesheet -->
+    <link rel="stylesheet" href="./Futures and Promises _ Scala Documentation_files/docsearch.min.css">
+
+
+  </head>
+  <body>
+
+
+
+<div class="navigation-fade-screen"></div>
+
+<header id="site-header">
+  <div class="wrap">
+    <nav class="navigation" role="menu">
+      <a href="http://scala-lang.org/" class="navigation-bdand">
+        <img src="./Futures and Promises _ Scala Documentation_files/scala-logo-white@2x.png" alt="">
+      </a>
+      <div class="navigation-panel-button">
+        <i class="fa fa-bars"></i>
+      </div>
+      <ul class="navigation-menu">
+        
+            <li class="navigation-menu-item">
+              <a href="https://docs.scala-lang.org/" class="active">Documentation</a>
+            </li>
+        
+            <li class="navigation-menu-item">
+              <a href="https://www.scala-lang.org/download/">Download</a>
+            </li>
+        
+            <li class="navigation-menu-item">
+              <a href="https://www.scala-lang.org/community/">Community</a>
+            </li>
+        
+            <li class="navigation-menu-item">
+              <a href="https://index.scala-lang.org/">Libraries</a>
+            </li>
+        
+            <li class="navigation-menu-item">
+              <a href="https://www.scala-lang.org/contribute/">Contribute</a>
+            </li>
+        
+            <li class="navigation-menu-item">
+              <a href="https://www.scala-lang.org/blog/">Blog</a>
+            </li>
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+<header id="doc-header">
+  <div class="wrap" style="padding: 0px;">
+    <nav class="doc-navigation" role="menu">
+      
+      <a href="https://docs.scala-lang.org/" class="navigation-bdand">
+        <img src="./Futures and Promises _ Scala Documentation_files/documentation-logo@2x.png" alt="">
+      </a>
+      <div class="navigation-ellipsis">
+        <i class="fa fa-ellipsis-v"></i>
+      </div>
+      <ul class="navigation-menu">
+        
+            <li class="navigation-menu-item">
+              
+              
+              <a href="https://docs.scala-lang.org/overviews/core/futures.html#" id="api">API</a>
+                
+                <ul class="navigation-dropdown" style="display: none;">
+                
+                  <li>
+                    
+                    
+                    <a href="https://www.scala-lang.org/api/current/">Current</a>
+                  </li>
+                
+                  <li>
+                    
+                    
+                    <a href="https://www.scala-lang.org/files/archive/nightly/2.13.x/api/2.13.x/">Nightly</a>
+                  </li>
+                
+                  <li>
+                    
+                    
+                    <a href="https://docs.scala-lang.org/api/all.html">All Versions</a>
+                  </li>
+                
+                </ul>
+                
+            </li>
+        
+            <li class="navigation-menu-item">
+              
+              
+              <a href="https://docs.scala-lang.org/overviews/core/futures.html#" id="learn">Learn</a>
+                
+                <ul class="navigation-dropdown" style="display: none;">
+                
+                  <li>
+                    
+                    
+                    <a href="https://docs.scala-lang.org/getting-started/index.html">Getting Started</a>
+                  </li>
+                
+                  <li>
+                    
+                    
+                    <a href="https://docs.scala-lang.org/tour/tour-of-scala.html">Tour of Scala</a>
+                  </li>
+                
+                  <li>
+                    
+                    
+                    <a href="https://docs.scala-lang.org/tutorials/scala-for-java-programmers.html">Scala for Java Programmers</a>
+                  </li>
+                
+                  <li>
+                    
+                    
+                    <a href="https://docs.scala-lang.org/learn.html">Online Resources</a>
+                  </li>
+                
+                </ul>
+                
+            </li>
+        
+            <li class="navigation-menu-item">
+              
+              
+              <a href="https://docs.scala-lang.org/overviews/core/futures.html#" id="reference">Reference</a>
+                
+                <ul class="navigation-dropdown" style="display: none;">
+                
+                  <li>
+                    
+                    
+                    <a href="https://docs.scala-lang.org/overviews/index.html">Guides &amp; Overviews</a>
+                  </li>
+                
+                  <li>
+                    
+                    
+                    <a href="https://docs.scala-lang.org/books.html">Books</a>
+                  </li>
+                
+                  <li>
+                    
+                    
+                    <a href="https://docs.scala-lang.org/tutorials/FAQ/index.html">Scala FAQs</a>
+                  </li>
+                
+                  <li>
+                    
+                    
+                    <a href="http://scala-lang.org/files/archive/spec/2.13/">Language Spec</a>
+                  </li>
+                
+                </ul>
+                
+            </li>
+        
+            <li class="navigation-menu-item">
+              
+              
+              <a href="https://docs.scala-lang.org/style/index.html" id="style guide">Style Guide</a>
+                
+            </li>
+        
+            <li class="navigation-menu-item">
+              
+              
+              <a href="https://docs.scala-lang.org/cheatsheets/index.html" id="cheatsheet">Cheatsheet</a>
+                
+            </li>
+        
+            <li class="navigation-menu-item">
+              
+              
+              <a href="https://docs.scala-lang.org/glossary/index.html" id="glossary">Glossary</a>
+                
+            </li>
+        
+            <li class="navigation-menu-item">
+              
+              
+              <a href="https://docs.scala-lang.org/sips/index.html" id="sips">SIPs</a>
+                
+            </li>
+        
+      </ul>
+    </nav>
+    <nav class="doc-navigation-submenus">
+      
+        
+          <ul class="navigation-submenu" id="api" style="display: none;">
+            
+              <li>
+                <a href="https://www.scala-lang.org/api/current/">Current</a>
+              </li>
+            
+              <li>
+                <a href="https://www.scala-lang.org/files/archive/nightly/2.13.x/api/2.13.x/">Nightly</a>
+              </li>
+            
+              <li>
+                <a href="https://docs.scala-lang.org/api/all.html">All Versions</a>
+              </li>
+            
+          </ul>
+        
+      
+        
+          <ul class="navigation-submenu" id="learn" style="display: none;">
+            
+              <li>
+                <a href="https://docs.scala-lang.org/getting-started/index.html">Getting Started</a>
+              </li>
+            
+              <li>
+                <a href="https://docs.scala-lang.org/tour/tour-of-scala.html">Tour of Scala</a>
+              </li>
+            
+              <li>
+                <a href="https://docs.scala-lang.org/tutorials/scala-for-java-programmers.html">Scala for Java Programmers</a>
+              </li>
+            
+              <li>
+                <a href="https://docs.scala-lang.org/learn.html">Online Resources</a>
+              </li>
+            
+          </ul>
+        
+      
+        
+          <ul class="navigation-submenu" id="reference" style="display: none;">
+            
+              <li>
+                <a href="https://docs.scala-lang.org/overviews/index.html">Guides &amp; Overviews</a>
+              </li>
+            
+              <li>
+                <a href="https://docs.scala-lang.org/books.html">Books</a>
+              </li>
+            
+              <li>
+                <a href="https://docs.scala-lang.org/tutorials/FAQ/index.html">Scala FAQs</a>
+              </li>
+            
+              <li>
+                <a href="http://scala-lang.org/files/archive/spec/2.13/">Language Spec</a>
+              </li>
+            
+          </ul>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+      <ul class="navigation-submenu ellipsis-menu" style="display: none;">
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://docs.scala-lang.org/style/index.html">Style Guide</a></li>
+          
+        
+          
+            <li><a href="https://docs.scala-lang.org/cheatsheets/index.html">Cheatsheet</a></li>
+          
+        
+          
+            <li><a href="https://docs.scala-lang.org/glossary/index.html">Glossary</a></li>
+          
+        
+          
+            <li><a href="https://docs.scala-lang.org/sips/index.html">SIPs</a></li>
+          
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+<main id="inner-main">
+
+  <!-- Title -->
+  <section class="title-page">
+    <div class="wrap">
+      <div class="content-title-documentation">
+        <div class="titles">
+          
+            <div class="supertitle">Futures</div>
+          
+          <h1>Futures and Promises</h1>
+        </div>
+        <div class="language-dropdown">
+          <div id="dd" class="wrapper-dropdown" tabindex="1">
+            <span>Language</span>
+              <ul class="dropdown"><li><a href="https://docs.scala-lang.org/overviews/core/futures.html">English</a></li><li><a href="https://docs.scala-lang.org/ja/overviews/core/futures.html" class="lang">日本語</a></li><li><a href="https://docs.scala-lang.org/zh-cn/overviews/core/futures.html" class="lang">中文 (简体)</a></li></ul>
+          </div>
+      </div>
+    </div>
+  </div></section>
+
+  
+  <section class="content">
+	<div class="wrap">
+		<div class="content-primary documentation">
+			<div class="inner-box">
+				<div class="toc-context">
+					<p><strong>By: Philipp Haller, Aleksandar Prokopec, Heather Miller, Viktor Klang, Roland Kuhn, and Vojin Jovanovic</strong></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Futures provide a way to reason about performing many operations
+in parallel– in an efficient and non-blocking way.
+A <a href="https://www.scala-lang.org/api/current/scala/concurrent/Future.html"><code class="highlighter-rouge">Future</code></a>
+is a placeholder object for a value that may not yet exist.
+Generally, the value of the Future is supplied concurrently and can subsequently be used.
+Composing concurrent tasks in this way tends to result in faster, asynchronous, non-blocking parallel code.</p>
+
+<p>By default, futures and promises are non-blocking, making use of
+callbacks instead of typical blocking operations.
+To simplify the use of callbacks both syntactically and conceptually,
+Scala provides combinators such as <code class="highlighter-rouge">flatMap</code>, <code class="highlighter-rouge">foreach</code>, and <code class="highlighter-rouge">filter</code> used to compose
+futures in a non-blocking way.
+Blocking is still possible - for cases where it is absolutely
+necessary, futures can be blocked on (although this is discouraged).</p>
+
+<!--
+The futures and promises API builds upon the notion of an
+`ExecutionContext`, an execution environment designed to manage
+resources such as thread pools between parallel frameworks and
+libraries (detailed in an accompanying SIP, forthcoming). Futures and
+promises are created through such `ExecutionContext`s. For example, this makes it possible,
+in the case of an application which requires blocking futures, for an underlying execution
+environment to resize itself if necessary to guarantee progress.
+-->
+
+<p>A typical future looks like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> inverseFuture: <span class="hljs-type">Future</span>[<span class="hljs-type">Matrix</span>] = <span class="hljs-type">Future</span> {
+  fatMatrix.inverse() <span class="hljs-comment">// non-blocking long lasting computation</span>
+}(executionContext)
+</code></pre></div></div>
+
+<p>Or with the more idiomatic:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">val</span> ec: <span class="hljs-type">ExecutionContext</span> = ...
+<span class="hljs-keyword">val</span> inverseFuture : <span class="hljs-type">Future</span>[<span class="hljs-type">Matrix</span>] = <span class="hljs-type">Future</span> {
+  fatMatrix.inverse()
+} <span class="hljs-comment">// ec is implicitly passed</span>
+</code></pre></div></div>
+
+<p>Both code snippets delegate the execution of <code class="highlighter-rouge">fatMatrix.inverse()</code> to an <code class="highlighter-rouge">ExecutionContext</code> and embody the result of the computation in <code class="highlighter-rouge">inverseFuture</code>.</p>
+
+<h2 id="execution-context">Execution Context</h2>
+
+<p>Future and Promises revolve around <a href="https://www.scala-lang.org/api/current/scala/concurrent/ExecutionContext.html"><code class="highlighter-rouge">ExecutionContext</code>s</a>, responsible for executing computations.</p>
+
+<p>An <code class="highlighter-rouge">ExecutionContext</code> is similar to an <a href="https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executor.html">Executor</a>:
+it is free to execute  computations in a new thread, in a pooled thread or in the current thread
+(although executing the computation in the current thread is discouraged – more on that below).</p>
+
+<p>The <code class="highlighter-rouge">scala.concurrent</code> package comes out of the box with an <code class="highlighter-rouge">ExecutionContext</code> implementation, a global static thread pool.
+It is also possible to convert an <code class="highlighter-rouge">Executor</code> into an <code class="highlighter-rouge">ExecutionContext</code>.
+Finally, users are free to extend the <code class="highlighter-rouge">ExecutionContext</code> trait to implement their own execution contexts,
+although this should only be done in rare cases.</p>
+
+<h3 id="the-global-execution-context">The Global Execution Context</h3>
+
+<p><code class="highlighter-rouge">ExecutionContext.global</code> is an <code class="highlighter-rouge">ExecutionContext</code> backed by a <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html">ForkJoinPool</a>.
+It should be sufficient for most situations but requires some care.
+A <code class="highlighter-rouge">ForkJoinPool</code> manages a limited number of threads (the maximum number of threads being referred to as <em>parallelism level</em>).
+The number of concurrently blocking computations can exceed the parallelism level
+only if each blocking call is wrapped inside a <code class="highlighter-rouge">blocking</code> call (more on that below).
+Otherwise, there is a risk that the thread pool in the global execution context is starved,
+and no computation can proceed.</p>
+
+<p>By default the <code class="highlighter-rouge">ExecutionContext.global</code> sets the parallelism level of its underlying fork-join pool to the number of available processors
+(<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Runtime.html#availableProcessors%28%29">Runtime.availableProcessors</a>).
+This configuration can be overridden by setting one (or more) of the following VM attributes:</p>
+
+<ul>
+  <li>scala.concurrent.context.minThreads - defaults to <code class="highlighter-rouge">Runtime.availableProcessors</code></li>
+  <li>scala.concurrent.context.numThreads - can be a number or a multiplier (N) in the form ‘xN’ ;  defaults to <code class="highlighter-rouge">Runtime.availableProcessors</code></li>
+  <li>scala.concurrent.context.maxThreads - defaults to <code class="highlighter-rouge">Runtime.availableProcessors</code></li>
+</ul>
+
+<p>The parallelism level will be set to <code class="highlighter-rouge">numThreads</code> as long as it remains within <code class="highlighter-rouge">[minThreads; maxThreads]</code>.</p>
+
+<p>As stated above the <code class="highlighter-rouge">ForkJoinPool</code> can increase the number of threads beyond its <code class="highlighter-rouge">parallelismLevel</code> in the presence of blocking computation.
+As explained in the <code class="highlighter-rouge">ForkJoinPool</code> API, this is only possible if the pool is explicitly notified:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">import</span> scala.concurrent.<span class="hljs-type">Future</span>
+<span class="hljs-keyword">import</span> scala.concurrent.forkjoin._
+
+<span class="hljs-comment">// the following is equivalent to `implicit val ec = ExecutionContext.global`</span>
+<span class="hljs-keyword">import</span> <span class="hljs-type">ExecutionContext</span>.<span class="hljs-type">Implicits</span>.global
+
+<span class="hljs-type">Future</span> {
+  <span class="hljs-type">ForkJoinPool</span>.managedBlock(
+    <span class="hljs-keyword">new</span> <span class="hljs-type">ManagedBlocker</span> {
+       <span class="hljs-keyword">var</span> done = <span class="hljs-literal">false</span>
+
+       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">block</span></span>(): <span class="hljs-type">Boolean</span> = {
+         <span class="hljs-keyword">try</span> {
+           myLock.lock()
+           <span class="hljs-comment">// ...</span>
+         } <span class="hljs-keyword">finally</span> {
+          done = <span class="hljs-literal">true</span>
+         }
+         <span class="hljs-literal">true</span>
+       }
+
+       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">isReleasable</span></span>: <span class="hljs-type">Boolean</span> = done
+    }
+  )
+}
+</code></pre></div></div>
+
+<p>Fortunately the concurrent package provides a convenient way for doing so:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">import</span> scala.concurrent.<span class="hljs-type">Future</span>
+<span class="hljs-keyword">import</span> scala.concurrent.blocking
+
+<span class="hljs-type">Future</span> {
+  blocking {
+    myLock.lock()
+    <span class="hljs-comment">// ...</span>
+  }
+}
+</code></pre></div></div>
+
+<p>Note that <code class="highlighter-rouge">blocking</code> is a general construct that will be discussed more in depth <a href="https://docs.scala-lang.org/overviews/core/futures.html#blocking-inside-a-future">below</a>.</p>
+
+<p>Last but not least, you must remember that the <code class="highlighter-rouge">ForkJoinPool</code> is not designed for long lasting blocking operations.
+Even when notified with <code class="highlighter-rouge">blocking</code> the pool might not spawn new workers as you would expect,
+and when new workers are created they can be as many as 32767.
+To give you an idea, the following code will use 32000 threads:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">val</span> ec = <span class="hljs-type">ExecutionContext</span>.global
+
+<span class="hljs-keyword">for</span>( i &lt;- <span class="hljs-number">1</span> to <span class="hljs-number">32000</span> ) {
+  <span class="hljs-type">Future</span> {
+    blocking {
+      <span class="hljs-type">Thread</span>.sleep(<span class="hljs-number">999999</span>)
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>If you need to wrap long lasting blocking operations we recommend using a dedicated <code class="highlighter-rouge">ExecutionContext</code>, for instance by wrapping a Java <code class="highlighter-rouge">Executor</code>.</p>
+
+<h3 id="adapting-a-java-executor">Adapting a Java Executor</h3>
+
+<p>Using the <code class="highlighter-rouge">ExecutionContext.fromExecutor</code> method you can wrap a Java <code class="highlighter-rouge">Executor</code> into an <code class="highlighter-rouge">ExecutionContext</code>.
+For instance:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-type">ExecutionContext</span>.fromExecutor(<span class="hljs-keyword">new</span> <span class="hljs-type">ThreadPoolExecutor</span>( <span class="hljs-comment">/* your configuration */</span> ))
+</code></pre></div></div>
+
+<h3 id="synchronous-execution-context">Synchronous Execution Context</h3>
+
+<p>One might be tempted to have an <code class="highlighter-rouge">ExecutionContext</code> that runs computations within the current thread:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> currentThreadExecutionContext = <span class="hljs-type">ExecutionContext</span>.fromExecutor(
+  <span class="hljs-keyword">new</span> <span class="hljs-type">Executor</span> {
+    <span class="hljs-comment">// Do not do this!</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">execute</span></span>(runnable: <span class="hljs-type">Runnable</span>) { runnable.run() }
+})
+</code></pre></div></div>
+
+<p>This should be avoided as it introduces non-determinism in the execution of your future.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs bash">Future {
+  <span class="hljs-keyword">do</span>Something
+}(ExecutionContext.global).map {
+  <span class="hljs-keyword">do</span>SomethingElse
+}(currentThreadExecutionContext)
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">doSomethingElse</code> call might either execute in <code class="highlighter-rouge">doSomething</code>’s thread or in the main thread, and therefore be either asynchronous or synchronous.
+As explained <a href="https://blog.ometer.com/2011/07/24/callbacks-synchronous-and-asynchronous/">here</a> a callback should not be both.</p>
+
+<h2 id="futures">Futures</h2>
+
+<p>A <code class="highlighter-rouge">Future</code> is an object holding a value which may become available at some point.
+This value is usually the result of some other computation:</p>
+
+<ol>
+  <li>If the computation has not yet completed, we say that the <code class="highlighter-rouge">Future</code> is <strong>not completed.</strong></li>
+  <li>If the computation has completed with a value or with an exception, we say that the <code class="highlighter-rouge">Future</code> is <strong>completed</strong>.</li>
+</ol>
+
+<p>Completion can take one of two forms:</p>
+
+<ol>
+  <li>When a <code class="highlighter-rouge">Future</code> is completed with a value, we say that the future was <strong>successfully completed</strong> with that value.</li>
+  <li>When a <code class="highlighter-rouge">Future</code> is completed with an exception thrown by the computation, we say that the <code class="highlighter-rouge">Future</code> was <strong>failed</strong> with that exception.</li>
+</ol>
+
+<p>A <code class="highlighter-rouge">Future</code> has an important property that it may only be assigned
+once.
+Once a <code class="highlighter-rouge">Future</code> object is given a value or an exception, it becomes
+in effect immutable– it can never be overwritten.</p>
+
+<p>The simplest way to create a future object is to invoke the <code class="highlighter-rouge">Future.apply</code>
+method which starts an asynchronous computation and returns a
+future holding the result of that computation.
+The result becomes available once the future completes.</p>
+
+<p>Note that <code class="highlighter-rouge">Future[T]</code> is a type which denotes future objects, whereas
+<code class="highlighter-rouge">Future.apply</code> is a method which creates and schedules an asynchronous
+computation, and then returns a future object which will be completed
+with the result of that computation.</p>
+
+<p>This is best shown through an example.</p>
+
+<p>Let’s assume that we want to use a hypothetical API of some
+popular social network to obtain a list of friends for a given user.
+We will open a new session and then send
+a request to obtain a list of friends of a particular user:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">import</span> scala.concurrent._
+<span class="hljs-keyword">import</span> <span class="hljs-type">ExecutionContext</span>.<span class="hljs-type">Implicits</span>.global
+
+<span class="hljs-keyword">val</span> session = socialNetwork.createSessionFor(<span class="hljs-string">"user"</span>, credentials)
+<span class="hljs-keyword">val</span> f: <span class="hljs-type">Future</span>[<span class="hljs-type">List</span>[<span class="hljs-type">Friend</span>]] = <span class="hljs-type">Future</span> {
+  session.getFriends()
+}
+</code></pre></div></div>
+
+<p>Above, we first import the contents of the <code class="highlighter-rouge">scala.concurrent</code> package
+to make the type <code class="highlighter-rouge">Future</code> visible.
+We will explain the second import shortly.</p>
+
+<p>We then initialize a session variable which we will use to send
+requests to the server, using a hypothetical <code class="highlighter-rouge">createSessionFor</code>
+method.
+To obtain the list of friends of a user, a request
+has to be sent over a network, which can take a long time.
+This is illustrated with the call to the method <code class="highlighter-rouge">getFriends</code> that returns <code class="highlighter-rouge">List[Friend]</code>.
+To better utilize the CPU until the response arrives, we should not
+block the rest of the program– this computation should be scheduled
+asynchronously. The <code class="highlighter-rouge">Future.apply</code> method does exactly that– it performs
+the specified computation block concurrently, in this case sending
+a request to the server and waiting for a response.</p>
+
+<p>The list of friends becomes available in the future <code class="highlighter-rouge">f</code> once the server
+responds.</p>
+
+<p>An unsuccessful attempt may result in an exception. In
+the following example, the <code class="highlighter-rouge">session</code> value is incorrectly
+initialized, so the computation in the <code class="highlighter-rouge">Future</code> block will throw a <code class="highlighter-rouge">NullPointerException</code>.
+This future <code class="highlighter-rouge">f</code> is then failed with this exception instead of being completed successfully:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> session = <span class="hljs-literal">null</span>
+<span class="hljs-keyword">val</span> f: <span class="hljs-type">Future</span>[<span class="hljs-type">List</span>[<span class="hljs-type">Friend</span>]] = <span class="hljs-type">Future</span> {
+  session.getFriends
+}
+</code></pre></div></div>
+
+<p>The line <code class="highlighter-rouge">import ExecutionContext.Implicits.global</code> above imports
+the default global execution context.
+Execution contexts execute tasks submitted to them, and
+you can think of execution contexts as thread pools.
+They are essential for the <code class="highlighter-rouge">Future.apply</code> method because
+they handle how and when the asynchronous computation is executed.
+You can define your own execution contexts and use them with <code class="highlighter-rouge">Future</code>,
+but for now it is sufficient to know that
+you can import the default execution context as shown above.</p>
+
+<p>Our example was based on a hypothetical social network API where
+the computation consists of sending a network request and waiting
+for a response.
+It is fair to offer an example involving an asynchronous computation
+which you can try out of the box. Assume you have a text file and
+you want to find the position of the first occurrence of a particular keyword.
+This computation may involve blocking while the file contents
+are being retrieved from the disk, so it makes sense to perform it
+concurrently with the rest of the computation.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> firstOccurrence: <span class="hljs-type">Future</span>[<span class="hljs-type">Int</span>] = <span class="hljs-type">Future</span> {
+  <span class="hljs-keyword">val</span> source = scala.io.<span class="hljs-type">Source</span>.fromFile(<span class="hljs-string">"myText.txt"</span>)
+  source.toSeq.indexOfSlice(<span class="hljs-string">"myKeyword"</span>)
+}
+</code></pre></div></div>
+
+<h3 id="callbacks">Callbacks</h3>
+
+<p>We now know how to start an asynchronous computation to create a new
+future value, but we have not shown how to use the result once it
+becomes available, so that we can do something useful with it.
+We are often interested in the result of the computation, not just its
+side-effects.</p>
+
+<p>In many future implementations, once the client of the future becomes interested
+in its result, it has to block its own computation and wait until the future is completed–
+only then can it use the value of the future to continue its own computation.
+Although this is allowed by the Scala <code class="highlighter-rouge">Future</code> API as we will show later,
+from a performance point of view a better way to do it is in a completely
+non-blocking way, by registering a callback on the future.
+This callback is called asynchronously once the future is completed. If the
+future has already been completed when registering the callback, then
+the callback may either be executed asynchronously, or sequentially on
+the same thread.</p>
+
+<p>The most general form of registering a callback is by using the <code class="highlighter-rouge">onComplete</code>
+method, which takes a callback function of type <code class="highlighter-rouge">Try[T] =&gt; U</code>.
+The callback is applied to the value
+of type <code class="highlighter-rouge">Success[T]</code> if the future completes successfully, or to a value
+of type <code class="highlighter-rouge">Failure[T]</code> otherwise.</p>
+
+<p>The <code class="highlighter-rouge">Try[T]</code> is similar to <code class="highlighter-rouge">Option[T]</code> or <code class="highlighter-rouge">Either[T, S]</code>, in that it is a monad
+potentially holding a value of some type.
+However, it has been specifically designed to either hold a value or
+some throwable object.
+Where an <code class="highlighter-rouge">Option[T]</code> could either be a value (i.e. <code class="highlighter-rouge">Some[T]</code>) or no value
+at all (i.e. <code class="highlighter-rouge">None</code>), <code class="highlighter-rouge">Try[T]</code> is a <code class="highlighter-rouge">Success[T]</code> when it holds a value
+and otherwise <code class="highlighter-rouge">Failure[T]</code>, which holds an exception. <code class="highlighter-rouge">Failure[T]</code> holds
+more information than just a plain <code class="highlighter-rouge">None</code> by saying why the value is not
+there.
+In the same time, you can think of <code class="highlighter-rouge">Try[T]</code> as a special version
+of <code class="highlighter-rouge">Either[Throwable, T]</code>, specialized for the case when the left
+value is a <code class="highlighter-rouge">Throwable</code>.</p>
+
+<p>Coming back to our social network example, let’s assume we want to
+fetch a list of our own recent posts and render them to the screen.
+We do so by calling a method <code class="highlighter-rouge">getRecentPosts</code> which returns
+a <code class="highlighter-rouge">List[String]</code>– a list of recent textual posts:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">import</span> scala.util.{<span class="hljs-type">Success</span>, <span class="hljs-type">Failure</span>}
+
+<span class="hljs-keyword">val</span> f: <span class="hljs-type">Future</span>[<span class="hljs-type">List</span>[<span class="hljs-type">String</span>]] = <span class="hljs-type">Future</span> {
+  session.getRecentPosts
+}
+
+f onComplete {
+  <span class="hljs-keyword">case</span> <span class="hljs-type">Success</span>(posts) =&gt; <span class="hljs-keyword">for</span> (post &lt;- posts) println(post)
+  <span class="hljs-keyword">case</span> <span class="hljs-type">Failure</span>(t) =&gt; println(<span class="hljs-string">"An error has occurred: "</span> + t.getMessage)
+}
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">onComplete</code> method is general in the sense that it allows the
+client to handle the result of both failed and successful future
+computations. In the case where only successful results need to be
+handled, the <code class="highlighter-rouge">foreach</code> callback can be used:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> f: <span class="hljs-type">Future</span>[<span class="hljs-type">List</span>[<span class="hljs-type">String</span>]] = <span class="hljs-type">Future</span> {
+  session.getRecentPosts
+}
+
+f foreach { posts =&gt;
+  <span class="hljs-keyword">for</span> (post &lt;- posts) println(post)
+}
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">Future</code>s provide a clean way of handling only failed results using
+the <code class="highlighter-rouge">failed</code> projection which converts a <code class="highlighter-rouge">Failure[Throwable]</code> to a
+<code class="highlighter-rouge">Success[Throwable]</code>. An example of doing this is provided in the
+section below on <a href="https://docs.scala-lang.org/overviews/core/futures.html#projections">projections</a>.</p>
+
+<p>Coming back to the previous example with searching for the first
+occurrence of a keyword, you might want to print the position
+of the keyword to the screen:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> firstOccurrence: <span class="hljs-type">Future</span>[<span class="hljs-type">Int</span>] = <span class="hljs-type">Future</span> {
+  <span class="hljs-keyword">val</span> source = scala.io.<span class="hljs-type">Source</span>.fromFile(<span class="hljs-string">"myText.txt"</span>)
+  source.toSeq.indexOfSlice(<span class="hljs-string">"myKeyword"</span>)
+}
+
+firstOccurrence onComplete {
+  <span class="hljs-keyword">case</span> <span class="hljs-type">Success</span>(idx) =&gt; println(<span class="hljs-string">"The keyword first appears at position: "</span> + idx)
+  <span class="hljs-keyword">case</span> <span class="hljs-type">Failure</span>(t) =&gt; println(<span class="hljs-string">"Could not process file: "</span> + t.getMessage)
+}
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">onComplete</code> and <code class="highlighter-rouge">foreach</code> methods both have result type <code class="highlighter-rouge">Unit</code>, which
+means invocations
+of these methods cannot be chained. Note that this design is intentional,
+to avoid suggesting that chained
+invocations may imply an ordering on the execution of the registered
+callbacks (callbacks registered on the same future are unordered).</p>
+
+<p>That said, we should now comment on <strong>when</strong> exactly the callback
+gets called. Since it requires the value in the future to be available,
+it can only be called after the future is completed.
+However, there is no guarantee it will be called by the thread
+that completed the future or the thread which created the callback.
+Instead, the callback is executed by some thread, at some time
+after the future object is completed.
+We say that the callback is executed <strong>eventually</strong>.</p>
+
+<p>Furthermore, the order in which the callbacks are executed is
+not predefined, even between different runs of the same application.
+In fact, the callbacks may not be called sequentially one after the other,
+but may concurrently execute at the same time.
+This means that in the following example the variable <code class="highlighter-rouge">totalA</code> may not be set
+to the correct number of lower case and upper case <code class="highlighter-rouge">a</code> characters from the computed
+text.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-meta">@volatile</span> <span class="hljs-keyword">var</span> totalA = <span class="hljs-number">0</span>
+
+<span class="hljs-keyword">val</span> text = <span class="hljs-type">Future</span> {
+  <span class="hljs-string">"na"</span> * <span class="hljs-number">16</span> + <span class="hljs-string">"BATMAN!!!"</span>
+}
+
+text foreach { txt =&gt;
+  totalA += txt.count(_ == 'a')
+}
+
+text foreach { txt =&gt;
+  totalA += txt.count(_ == '<span class="hljs-type">A</span>')
+}
+</code></pre></div></div>
+
+<p>Above, the two callbacks may execute one after the other, in
+which case the variable <code class="highlighter-rouge">totalA</code> holds the expected value <code class="highlighter-rouge">18</code>.
+However, they could also execute concurrently, so <code class="highlighter-rouge">totalA</code> could
+end up being either <code class="highlighter-rouge">16</code> or <code class="highlighter-rouge">2</code>, since <code class="highlighter-rouge">+=</code> is not an atomic
+operation (i.e. it consists of a read and a write step which may
+interleave arbitrarily with other reads and writes).</p>
+
+<p>For the sake of completeness the semantics of callbacks are listed here:</p>
+
+<ol>
+  <li>
+    <p>Registering an <code class="highlighter-rouge">onComplete</code> callback on the future
+ensures that the corresponding closure is invoked after
+the future is completed, eventually.</p>
+  </li>
+  <li>
+    <p>Registering a <code class="highlighter-rouge">foreach</code> callback has the same
+semantics as <code class="highlighter-rouge">onComplete</code>, with the difference that the closure is only called
+if the future is completed successfully.</p>
+  </li>
+  <li>
+    <p>Registering a callback on the future which is already completed
+will result in the callback being executed eventually (as implied by
+1).</p>
+  </li>
+  <li>
+    <p>In the event that multiple callbacks are registered on the future,
+the order in which they are executed is not defined. In fact, the
+callbacks may be executed concurrently with one another.
+However, a particular <code class="highlighter-rouge">ExecutionContext</code> implementation may result
+in a well-defined order.</p>
+  </li>
+  <li>
+    <p>In the event that some of the callbacks throw an exception, the
+other callbacks are executed regardless.</p>
+  </li>
+  <li>
+    <p>In the event that some of the callbacks never complete (e.g. the
+callback contains an infinite loop), the other callbacks may not be
+executed at all. In these cases, a potentially blocking callback must
+use the <code class="highlighter-rouge">blocking</code> construct (see below).</p>
+  </li>
+  <li>
+    <p>Once executed, the callbacks are removed from the future object,
+thus being eligible for GC.</p>
+  </li>
+</ol>
+
+<h3 id="functional-composition-and-for-comprehensions">Functional Composition and For-Comprehensions</h3>
+
+<p>The callback mechanism we have shown is sufficient to chain future
+results with subsequent computations.
+However, it is sometimes inconvenient and results in bulky code.
+We show this with an example. Assume we have an API for
+interfacing with a currency trading service. Suppose we want to buy US
+dollars, but only when it’s profitable. We first show how this could
+be done using callbacks:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> rateQuote = <span class="hljs-type">Future</span> {
+  connection.getCurrentValue(<span class="hljs-type">USD</span>)
+}
+
+rateQuote foreach { quote =&gt;
+  <span class="hljs-keyword">val</span> purchase = <span class="hljs-type">Future</span> {
+    <span class="hljs-keyword">if</span> (isProfitable(quote)) connection.buy(amount, quote)
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-type">Exception</span>(<span class="hljs-string">"not profitable"</span>)
+  }
+
+  purchase foreach { _ =&gt;
+    println(<span class="hljs-string">"Purchased "</span> + amount + <span class="hljs-string">" USD"</span>)
+  }
+}
+</code></pre></div></div>
+
+<p>We start by creating a future <code class="highlighter-rouge">rateQuote</code> which gets the current exchange
+rate.
+After this value is obtained from the server and the future successfully
+completed, the computation proceeds in the <code class="highlighter-rouge">foreach</code> callback and we are
+ready to decide whether to buy or not.
+We therefore create another future <code class="highlighter-rouge">purchase</code> which makes a decision to buy only if it’s profitable
+to do so, and then sends a request.
+Finally, once the purchase is completed, we print a notification message
+to the standard output.</p>
+
+<p>This works, but is inconvenient for two reasons. First, we have to use
+<code class="highlighter-rouge">foreach</code> and nest the second <code class="highlighter-rouge">purchase</code> future within
+it. Imagine that after the <code class="highlighter-rouge">purchase</code> is completed we want to sell
+some other currency. We would have to repeat this pattern within the
+<code class="highlighter-rouge">foreach</code> callback, making the code overly indented, bulky and hard
+to reason about.</p>
+
+<p>Second, the <code class="highlighter-rouge">purchase</code> future is not in the scope with the rest of
+the code– it can only be acted upon from within the <code class="highlighter-rouge">foreach</code>
+callback. This means that other parts of the application do not
+see the <code class="highlighter-rouge">purchase</code> future and cannot register another <code class="highlighter-rouge">foreach</code>
+callback to it, for example, to sell some other currency.</p>
+
+<p>For these two reasons, futures provide combinators which allow a
+more straightforward composition. One of the basic combinators
+is <code class="highlighter-rouge">map</code>, which, given a future and a mapping function for the value of
+the future, produces a new future that is completed with the
+mapped value once the original future is successfully completed.
+You can reason about mapping futures in the same way you reason
+about mapping collections.</p>
+
+<p>Let’s rewrite the previous example using the <code class="highlighter-rouge">map</code> combinator:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> rateQuote = <span class="hljs-type">Future</span> {
+  connection.getCurrentValue(<span class="hljs-type">USD</span>)
+}
+
+<span class="hljs-keyword">val</span> purchase = rateQuote map { quote =&gt;
+  <span class="hljs-keyword">if</span> (isProfitable(quote)) connection.buy(amount, quote)
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-type">Exception</span>(<span class="hljs-string">"not profitable"</span>)
+}
+
+purchase foreach { _ =&gt;
+  println(<span class="hljs-string">"Purchased "</span> + amount + <span class="hljs-string">" USD"</span>)
+}
+</code></pre></div></div>
+
+<p>By using <code class="highlighter-rouge">map</code> on <code class="highlighter-rouge">rateQuote</code> we have eliminated one <code class="highlighter-rouge">foreach</code> callback and,
+more importantly, the nesting.
+If we now decide to sell some other currency, it suffices to use
+<code class="highlighter-rouge">map</code> on <code class="highlighter-rouge">purchase</code> again.</p>
+
+<p>But what happens if <code class="highlighter-rouge">isProfitable</code> returns <code class="highlighter-rouge">false</code>, hence causing
+an exception to be thrown?
+In that case <code class="highlighter-rouge">purchase</code> is failed with that exception.
+Furthermore, imagine that the connection was broken and that
+<code class="highlighter-rouge">getCurrentValue</code> threw an exception, failing <code class="highlighter-rouge">rateQuote</code>.
+In that case we’d have no value to map, so the <code class="highlighter-rouge">purchase</code> would
+automatically be failed with the same exception as <code class="highlighter-rouge">rateQuote</code>.</p>
+
+<p>In conclusion, if the original future is
+completed successfully then the returned future is completed with a
+mapped value from the original future. If the mapping function throws
+an exception the future is completed with that exception. If the
+original future fails with an exception then the returned future also
+contains the same exception. This exception propagating semantics is
+present in the rest of the combinators, as well.</p>
+
+<p>One of the design goals for futures was to enable their use in for-comprehensions.
+For this reason, futures also have the <code class="highlighter-rouge">flatMap</code> and <code class="highlighter-rouge">withFilter</code>
+combinators. The <code class="highlighter-rouge">flatMap</code> method takes a function that maps the value
+to a new future <code class="highlighter-rouge">g</code>, and then returns a future which is completed once
+<code class="highlighter-rouge">g</code> is completed.</p>
+
+<p>Lets assume that we want to exchange US dollars for Swiss francs
+(CHF). We have to fetch quotes for both currencies, and then decide on
+buying based on both quotes.
+Here is an example of <code class="highlighter-rouge">flatMap</code> and <code class="highlighter-rouge">withFilter</code> usage within for-comprehensions:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> usdQuote = <span class="hljs-type">Future</span> { connection.getCurrentValue(<span class="hljs-type">USD</span>) }
+<span class="hljs-keyword">val</span> chfQuote = <span class="hljs-type">Future</span> { connection.getCurrentValue(<span class="hljs-type">CHF</span>) }
+
+<span class="hljs-keyword">val</span> purchase = <span class="hljs-keyword">for</span> {
+  usd &lt;- usdQuote
+  chf &lt;- chfQuote
+  <span class="hljs-keyword">if</span> isProfitable(usd, chf)
+} <span class="hljs-keyword">yield</span> connection.buy(amount, chf)
+
+purchase foreach { _ =&gt;
+  println(<span class="hljs-string">"Purchased "</span> + amount + <span class="hljs-string">" CHF"</span>)
+}
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">purchase</code> future is completed only once both <code class="highlighter-rouge">usdQuote</code>
+and <code class="highlighter-rouge">chfQuote</code> are completed– it depends on the values
+of both these futures so its own computation cannot begin
+earlier.</p>
+
+<p>The for-comprehension above is translated into:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> purchase = usdQuote flatMap {
+  usd =&gt;
+  chfQuote
+    .withFilter(chf =&gt; isProfitable(usd, chf))
+    .map(chf =&gt; connection.buy(amount, chf))
+}
+</code></pre></div></div>
+
+<p>which is a bit harder to grasp than the for-comprehension, but
+we analyze it to better understand the <code class="highlighter-rouge">flatMap</code> operation.
+The <code class="highlighter-rouge">flatMap</code> operation maps its own value into some other future.
+Once this different future is completed, the resulting future
+is completed with its value.
+In our example, <code class="highlighter-rouge">flatMap</code> uses the value of the <code class="highlighter-rouge">usdQuote</code> future
+to map the value of the <code class="highlighter-rouge">chfQuote</code> into a third future which
+sends a request to buy a certain amount of Swiss francs.
+The resulting future <code class="highlighter-rouge">purchase</code> is completed only once this third
+future returned from <code class="highlighter-rouge">map</code> completes.</p>
+
+<p>This can be mind-boggling, but fortunately the <code class="highlighter-rouge">flatMap</code> operation
+is seldom used outside for-comprehensions, which are easier to
+use and understand.</p>
+
+<p>The <code class="highlighter-rouge">filter</code> combinator creates a new future which contains the value
+of the original future only if it satisfies some predicate. Otherwise,
+the new future is failed with a <code class="highlighter-rouge">NoSuchElementException</code>. For futures
+calling <code class="highlighter-rouge">filter</code> has exactly the same effect as does calling <code class="highlighter-rouge">withFilter</code>.</p>
+
+<p>The relationship between the <code class="highlighter-rouge">collect</code> and <code class="highlighter-rouge">filter</code> combinator is similar
+to the relationship of these methods in the collections API.</p>
+
+<p>Since the <code class="highlighter-rouge">Future</code> trait can conceptually contain two types of values
+(computation results and exceptions), there exists a need for
+combinators which handle exceptions.</p>
+
+<p>Let’s assume that based on the <code class="highlighter-rouge">rateQuote</code> we decide to buy a certain
+amount. The <code class="highlighter-rouge">connection.buy</code> method takes an <code class="highlighter-rouge">amount</code> to buy and the expected
+<code class="highlighter-rouge">quote</code>. It returns the amount bought. If the
+<code class="highlighter-rouge">quote</code> has changed in the meanwhile, it will throw a
+<code class="highlighter-rouge">QuoteChangedException</code> and it will not buy anything. If we want our
+future to contain <code class="highlighter-rouge">0</code> instead of the exception, we use the <code class="highlighter-rouge">recover</code>
+combinator:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> purchase: <span class="hljs-type">Future</span>[<span class="hljs-type">Int</span>] = rateQuote map {
+  quote =&gt; connection.buy(amount, quote)
+} recover {
+  <span class="hljs-keyword">case</span> <span class="hljs-type">QuoteChangedException</span>() =&gt; <span class="hljs-number">0</span>
+}
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">recover</code> combinator creates a new future which holds the same
+result as the original future if it completed successfully. If it did
+not then the partial function argument is applied to the <code class="highlighter-rouge">Throwable</code>
+which failed the original future. If it maps the <code class="highlighter-rouge">Throwable</code> to some
+value, then the new future is successfully completed with that value.
+If the partial function is not defined on that <code class="highlighter-rouge">Throwable</code>, then the
+resulting future is failed with the same <code class="highlighter-rouge">Throwable</code>.</p>
+
+<p>The <code class="highlighter-rouge">recoverWith</code> combinator creates a new future which holds the
+same result as the original future if it completed successfully.
+Otherwise, the partial function is applied to the <code class="highlighter-rouge">Throwable</code> which
+failed the original future. If it maps the <code class="highlighter-rouge">Throwable</code> to some future,
+then this future is completed with the result of that future.
+Its relation to <code class="highlighter-rouge">recover</code> is similar to that of <code class="highlighter-rouge">flatMap</code> to <code class="highlighter-rouge">map</code>.</p>
+
+<p>Combinator <code class="highlighter-rouge">fallbackTo</code> creates a new future which holds the result
+of this future if it was completed successfully, or otherwise the
+successful result of the argument future. In the event that both this
+future and the argument future fail, the new future is completed with
+the exception from this future, as in the following example which
+tries to print US dollar value, but prints the Swiss franc value in
+the case it fails to obtain the dollar value:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> usdQuote = <span class="hljs-type">Future</span> {
+  connection.getCurrentValue(<span class="hljs-type">USD</span>)
+} map {
+  usd =&gt; <span class="hljs-string">"Value: "</span> + usd + <span class="hljs-string">"$"</span>
+}
+<span class="hljs-keyword">val</span> chfQuote = <span class="hljs-type">Future</span> {
+  connection.getCurrentValue(<span class="hljs-type">CHF</span>)
+} map {
+  chf =&gt; <span class="hljs-string">"Value: "</span> + chf + <span class="hljs-string">"CHF"</span>
+}
+
+<span class="hljs-keyword">val</span> anyQuote = usdQuote fallbackTo chfQuote
+
+anyQuote foreach { println(_) }
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">andThen</code> combinator is used purely for side-effecting purposes.
+It returns a new future with exactly the same result as the current
+future, regardless of whether the current future failed or not.
+Once the current future is completed with the result, the closure
+corresponding to the <code class="highlighter-rouge">andThen</code> is invoked and then the new future is
+completed with the same result as this future. This ensures that
+multiple <code class="highlighter-rouge">andThen</code> calls are ordered, as in the following example
+which stores the recent posts from a social network to a mutable set
+and then renders all the posts to the screen:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> allPosts = mutable.<span class="hljs-type">Set</span>[<span class="hljs-type">String</span>]()
+
+<span class="hljs-type">Future</span> {
+  session.getRecentPosts
+} andThen {
+  <span class="hljs-keyword">case</span> <span class="hljs-type">Success</span>(posts) =&gt; allPosts ++= posts
+} andThen {
+  <span class="hljs-keyword">case</span> _ =&gt;
+  clearAll()
+  <span class="hljs-keyword">for</span> (post &lt;- allPosts) render(post)
+}
+</code></pre></div></div>
+
+<p>In summary, the combinators on futures are purely functional.
+Every combinator returns a new future which is related to the
+future it was derived from.</p>
+
+<h3 id="projections">Projections</h3>
+
+<p>To enable for-comprehensions on a result returned as an exception,
+futures also have projections. If the original future fails, the
+<code class="highlighter-rouge">failed</code> projection returns a future containing a value of type
+<code class="highlighter-rouge">Throwable</code>. If the original future succeeds, the <code class="highlighter-rouge">failed</code> projection
+fails with a <code class="highlighter-rouge">NoSuchElementException</code>. The following is an example
+which prints the exception to the screen:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> f = <span class="hljs-type">Future</span> {
+  <span class="hljs-number">2</span> / <span class="hljs-number">0</span>
+}
+<span class="hljs-keyword">for</span> (exc &lt;- f.failed) println(exc)
+</code></pre></div></div>
+
+<p>The for-comprehension in this example is translated to:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs">f.failed.foreach(exc =&gt; println(exc))
+</code></pre></div></div>
+
+<p>Because <code class="highlighter-rouge">f</code> is unsuccessful here, the closure is registered to
+the <code class="highlighter-rouge">foreach</code> callback on a newly-successful <code class="highlighter-rouge">Future[Throwable]</code>.
+The following example does not print anything to the screen:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> g = <span class="hljs-type">Future</span> {
+  <span class="hljs-number">4</span> / <span class="hljs-number">2</span>
+}
+<span class="hljs-keyword">for</span> (exc &lt;- g.failed) println(exc)
+</code></pre></div></div>
+
+<!--
+There is another projection called `timedout` which is specific to the
+`FutureTimeoutException`. It works in exactly the same way as the
+`failed` projection, but is triggered only for this exception type. In
+all other cases, it fails with a `NoSuchElementException`.
+-->
+
+<!--
+TODO: the `failed` projection can be extended to be parametric in
+the throwable types it matches.
+-->
+
+<!--
+Invoking the `Future.apply` construct uses a global execution context to start an asynchronous computation. In the case the client desires to use a custom execution context to start an asynchronous computation:
+
+    val f = customExecutionContext Future {
+      4 / 2
+    }
+-->
+
+<h3 id="extending-futures">Extending Futures</h3>
+
+<p>Support for extending the Futures API with additional utility methods is planned.
+This will allow external frameworks to provide more specialized utilities.</p>
+
+<h2 id="blocking">Blocking</h2>
+
+<p>Futures are generally asynchronous and do not block the underlying execution threads.
+However, in certain cases, it is necessary to block.
+We distinguish two forms of blocking the execution thread:
+invoking arbitrary code that blocks the thread from within the future,
+and blocking from outside another future, waiting until that future gets completed.</p>
+
+<h3 id="blocking-inside-a-future">Blocking inside a Future</h3>
+
+<p>As seen with the global <code class="highlighter-rouge">ExecutionContext</code>, it is possible to notify an <code class="highlighter-rouge">ExecutionContext</code> of a blocking call with the <code class="highlighter-rouge">blocking</code> construct.
+The implementation is however at the complete discretion of the <code class="highlighter-rouge">ExecutionContext</code>. While some <code class="highlighter-rouge">ExecutionContext</code> such as <code class="highlighter-rouge">ExecutionContext.global</code>
+implement <code class="highlighter-rouge">blocking</code> by means of a <code class="highlighter-rouge">ManagedBlocker</code>, some execution contexts such as the fixed thread pool:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs">ExecutionContext.fromExecutor(Executors.newFixedThreadPool(x))
+</code></pre></div></div>
+
+<p>will do nothing, as shown in the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">val</span> ec = <span class="hljs-type">ExecutionContext</span>.fromExecutor(
+                    <span class="hljs-type">Executors</span>.newFixedThreadPool(<span class="hljs-number">4</span>))
+<span class="hljs-type">Future</span> {
+  blocking { blockingStuff() }
+}
+</code></pre></div></div>
+
+<p>Has the same effect as</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs">Future { blockingStuff() }
+</code></pre></div></div>
+
+<p>The blocking code may also throw an exception. In this case, the exception is forwarded to the caller.</p>
+
+<h3 id="blocking-outside-the-future">Blocking outside the Future</h3>
+
+<p>As mentioned earlier, blocking on a future is strongly discouraged
+for the sake of performance and for the prevention of deadlocks.
+Callbacks and combinators on futures are a preferred way to use their results.
+However, blocking may be necessary in certain situations and is supported by
+the Futures and Promises API.</p>
+
+<p>In the currency trading example above, one place to block is at the
+end of the application to make sure that all of the futures have been completed.
+Here is an example of how to block on the result of a future:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">import</span> scala.concurrent._
+<span class="hljs-keyword">import</span> scala.concurrent.duration._
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span></span>(args: <span class="hljs-type">Array</span>[<span class="hljs-type">String</span>]) {
+  <span class="hljs-keyword">val</span> rateQuote = <span class="hljs-type">Future</span> {
+    connection.getCurrentValue(<span class="hljs-type">USD</span>)
+  }
+
+  <span class="hljs-keyword">val</span> purchase = rateQuote map { quote =&gt;
+    <span class="hljs-keyword">if</span> (isProfitable(quote)) connection.buy(amount, quote)
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-type">Exception</span>(<span class="hljs-string">"not profitable"</span>)
+  }
+
+  <span class="hljs-type">Await</span>.result(purchase, <span class="hljs-number">0</span> nanos)
+}
+</code></pre></div></div>
+
+<p>In the case that the future fails, the caller is forwarded the
+exception that the future is failed with. This includes the <code class="highlighter-rouge">failed</code>
+projection– blocking on it results in a <code class="highlighter-rouge">NoSuchElementException</code>
+being thrown if the original future is completed successfully.</p>
+
+<p>Alternatively, calling <code class="highlighter-rouge">Await.ready</code> waits until the future becomes
+completed, but does not retrieve its result. In the same way, calling
+that method will not throw an exception if the future is failed.</p>
+
+<p>The <code class="highlighter-rouge">Future</code> trait implements the <code class="highlighter-rouge">Awaitable</code> trait with methods
+<code class="highlighter-rouge">ready()</code> and <code class="highlighter-rouge">result()</code>. These methods cannot be called directly
+by the clients– they can only be called by the execution context.</p>
+
+<h2 id="exceptions">Exceptions</h2>
+
+<p>When asynchronous computations throw unhandled exceptions, futures
+associated with those computations fail. Failed futures store an
+instance of <code class="highlighter-rouge">Throwable</code> instead of the result value. <code class="highlighter-rouge">Future</code>s provide
+the <code class="highlighter-rouge">failed</code> projection method, which allows this <code class="highlighter-rouge">Throwable</code> to be
+treated as the success value of another <code class="highlighter-rouge">Future</code>. The following special
+exceptions are treated differently:</p>
+
+<ol>
+  <li>
+    <p><code class="highlighter-rouge">scala.runtime.NonLocalReturnControl[_]</code> – this exception holds a value
+associated with the return. Typically, <code class="highlighter-rouge">return</code> constructs in method
+bodies are translated to <code class="highlighter-rouge">throw</code>s with this exception. Instead of
+keeping this exception, the associated value is stored into the future or a promise.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">ExecutionException</code> - stored when the computation fails due to an
+unhandled <code class="highlighter-rouge">InterruptedException</code>, <code class="highlighter-rouge">Error</code> or a
+<code class="highlighter-rouge">scala.util.control.ControlThrowable</code>. In this case the
+<code class="highlighter-rouge">ExecutionException</code> has the unhandled exception as its cause. The rationale
+behind this is to prevent propagation of critical and control-flow related
+exceptions normally not handled by the client code and at the same time inform
+the client in which future the computation failed.</p>
+  </li>
+</ol>
+
+<p>Fatal exceptions (as determined by <code class="highlighter-rouge">NonFatal</code>) are rethrown in the thread executing
+the failed asynchronous computation. This informs the code managing the executing
+threads of the problem and allows it to fail fast, if necessary. See
+<a href="https://www.scala-lang.org/api/current/scala/util/control/NonFatal$.html"><code class="highlighter-rouge">NonFatal</code></a>
+for a more precise description of the semantics.</p>
+
+<h2 id="promises">Promises</h2>
+
+<p>So far we have only considered <code class="highlighter-rouge">Future</code> objects created by
+asynchronous computations started using the <code class="highlighter-rouge">Future</code> method.
+However, futures can also be created using <em>promises</em>.</p>
+
+<p>While futures are defined as a type of read-only placeholder object
+created for a result which doesn’t yet exist, a promise can be thought
+of as a writable, single-assignment container, which completes a
+future. That is, a promise can be used to successfully complete a
+future with a value (by “completing” the promise) using the <code class="highlighter-rouge">success</code>
+method. Conversely, a promise can also be used to complete a future
+with an exception, by failing the promise, using the <code class="highlighter-rouge">failure</code> method.</p>
+
+<p>A promise <code class="highlighter-rouge">p</code> completes the future returned by <code class="highlighter-rouge">p.future</code>. This future
+is specific to the promise <code class="highlighter-rouge">p</code>. Depending on the implementation, it
+may be the case that <code class="highlighter-rouge">p.future eq p</code>.</p>
+
+<p>Consider the following producer-consumer example, in which one computation
+produces a value and hands it off to another computation which consumes
+that value. This passing of the value is done using a promise.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">import</span> scala.concurrent.{ <span class="hljs-type">Future</span>, <span class="hljs-type">Promise</span> }
+<span class="hljs-keyword">import</span> scala.concurrent.<span class="hljs-type">ExecutionContext</span>.<span class="hljs-type">Implicits</span>.global
+
+<span class="hljs-keyword">val</span> p = <span class="hljs-type">Promise</span>[<span class="hljs-type">T</span>]()
+<span class="hljs-keyword">val</span> f = p.future
+
+<span class="hljs-keyword">val</span> producer = <span class="hljs-type">Future</span> {
+  <span class="hljs-keyword">val</span> r = produceSomething()
+  p success r
+  continueDoingSomethingUnrelated()
+}
+
+<span class="hljs-keyword">val</span> consumer = <span class="hljs-type">Future</span> {
+  startDoingSomething()
+  f foreach { r =&gt;
+    doSomethingWithResult()
+  }
+}
+</code></pre></div></div>
+
+<p>Here, we create a promise and use its <code class="highlighter-rouge">future</code> method to obtain the
+<code class="highlighter-rouge">Future</code> that it completes. Then, we begin two asynchronous
+computations. The first does some computation, resulting in a value
+<code class="highlighter-rouge">r</code>, which is then used to complete the future <code class="highlighter-rouge">f</code>, by fulfilling
+the promise <code class="highlighter-rouge">p</code>. The second does some computation, and then reads the result <code class="highlighter-rouge">r</code>
+of the completed future <code class="highlighter-rouge">f</code>. Note that the <code class="highlighter-rouge">consumer</code> can obtain the
+result before the <code class="highlighter-rouge">producer</code> task is finished executing
+the <code class="highlighter-rouge">continueDoingSomethingUnrelated()</code> method.</p>
+
+<p>As mentioned before, promises have single-assignment semantics. As
+such, they can be completed only once. Calling <code class="highlighter-rouge">success</code> on a
+promise that has already been completed (or failed) will throw an
+<code class="highlighter-rouge">IllegalStateException</code>.</p>
+
+<p>The following example shows how to fail a promise.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> p = <span class="hljs-type">Promise</span>[<span class="hljs-type">T</span>]()
+<span class="hljs-keyword">val</span> f = p.future
+
+<span class="hljs-keyword">val</span> producer = <span class="hljs-type">Future</span> {
+  <span class="hljs-keyword">val</span> r = someComputation
+  <span class="hljs-keyword">if</span> (isInvalid(r))
+    p failure (<span class="hljs-keyword">new</span> <span class="hljs-type">IllegalStateException</span>)
+  <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">val</span> q = doSomeMoreComputation(r)
+    p success q
+  }
+}
+</code></pre></div></div>
+
+<p>Here, the <code class="highlighter-rouge">producer</code> computes an intermediate result <code class="highlighter-rouge">r</code>, and checks
+whether it’s valid. In the case that it’s invalid, it fails the
+promise by completing the promise <code class="highlighter-rouge">p</code> with an exception. In this case,
+the associated future <code class="highlighter-rouge">f</code> is failed. Otherwise, the <code class="highlighter-rouge">producer</code>
+continues its computation, and finally completes the future <code class="highlighter-rouge">f</code> with a
+valid result, by completing promise <code class="highlighter-rouge">p</code>.</p>
+
+<p>Promises can also be completed with a <code class="highlighter-rouge">complete</code> method which takes
+a potential value <code class="highlighter-rouge">Try[T]</code>– either a failed result of type <code class="highlighter-rouge">Failure[Throwable]</code> or a
+successful result of type <code class="highlighter-rouge">Success[T]</code>.</p>
+
+<p>Analogous to <code class="highlighter-rouge">success</code>, calling <code class="highlighter-rouge">failure</code> and <code class="highlighter-rouge">complete</code> on a promise that has already
+been completed will throw an <code class="highlighter-rouge">IllegalStateException</code>.</p>
+
+<p>One nice property of programs written using promises with operations
+described so far and futures which are composed through monadic
+operations without side-effects is that these programs are
+deterministic. Deterministic here means that, given that no exception
+is thrown in the program, the result of the program (values observed
+in the futures) will always be the same, regardless of the execution
+schedule of the parallel program.</p>
+
+<p>In some cases the client may want to complete the promise only if it
+has not been completed yet (e.g., there are several HTTP requests being
+executed from several different futures and the client is interested only
+in the first HTTP response - corresponding to the first future to
+complete the promise). For these reasons methods <code class="highlighter-rouge">tryComplete</code>,
+<code class="highlighter-rouge">trySuccess</code> and <code class="highlighter-rouge">tryFailure</code> exist on promise. The client should be
+aware that using these methods results in programs which are not
+deterministic, but depend on the execution schedule.</p>
+
+<p>The method <code class="highlighter-rouge">completeWith</code> completes the promise with another
+future. After the future is completed, the promise gets completed with
+the result of that future as well. The following program prints <code class="highlighter-rouge">1</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">val</span> f = <span class="hljs-type">Future</span> { <span class="hljs-number">1</span> }
+<span class="hljs-keyword">val</span> p = <span class="hljs-type">Promise</span>[<span class="hljs-type">Int</span>]()
+
+p completeWith f
+
+p.future foreach { x =&gt;
+  println(x)
+}
+</code></pre></div></div>
+
+<p>When failing a promise with an exception, three subtypes of <code class="highlighter-rouge">Throwable</code>s
+are handled specially. If the <code class="highlighter-rouge">Throwable</code> used to break the promise is
+a <code class="highlighter-rouge">scala.runtime.NonLocalReturnControl</code>, then the promise is completed with
+the corresponding value. If the <code class="highlighter-rouge">Throwable</code> used to break the promise is
+an instance of <code class="highlighter-rouge">Error</code>, <code class="highlighter-rouge">InterruptedException</code>, or
+<code class="highlighter-rouge">scala.util.control.ControlThrowable</code>, the <code class="highlighter-rouge">Throwable</code> is wrapped as
+the cause of a new <code class="highlighter-rouge">ExecutionException</code> which, in turn, is failing
+the promise.</p>
+
+<p>Using promises, the <code class="highlighter-rouge">onComplete</code> method of the futures and the <code class="highlighter-rouge">future</code> construct
+you can implement any of the functional composition combinators described earlier.
+Let’s assume you want to implement a new combinator <code class="highlighter-rouge">first</code> which takes
+two futures <code class="highlighter-rouge">f</code> and <code class="highlighter-rouge">g</code> and produces a third future which is completed by either
+<code class="highlighter-rouge">f</code> or <code class="highlighter-rouge">g</code> (whichever comes first), but only given that it is successful.</p>
+
+<p>Here is an example of how to do it:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">first</span></span>[<span class="hljs-type">T</span>](f: <span class="hljs-type">Future</span>[<span class="hljs-type">T</span>], g: <span class="hljs-type">Future</span>[<span class="hljs-type">T</span>]): <span class="hljs-type">Future</span>[<span class="hljs-type">T</span>] = {
+  <span class="hljs-keyword">val</span> p = <span class="hljs-type">Promise</span>[<span class="hljs-type">T</span>]
+
+  f foreach { x =&gt;
+    p.trySuccess(x)
+  }
+
+  g foreach { x =&gt;
+    p.trySuccess(x)
+  }
+
+  p.future
+}
+</code></pre></div></div>
+
+<p>Note that in this implementation, if neither <code class="highlighter-rouge">f</code> nor <code class="highlighter-rouge">g</code> succeeds, then <code class="highlighter-rouge">first(f, g)</code> never completes (either with a value or with an exception).</p>
+
+<!--
+## Migration p
+
+scala.actor.Futures?
+for clients
+
+
+## Implementing custom futures and promises p
+for library writers
+-->
+
+<h2 id="utilities">Utilities</h2>
+
+<p>To simplify handling of time in concurrent applications <code class="highlighter-rouge">scala.concurrent</code>
+ introduces a <code class="highlighter-rouge">Duration</code> abstraction. <code class="highlighter-rouge">Duration</code> is not supposed to be yet another
+ general time abstraction. It is meant to be used with concurrency libraries and
+ resides in <code class="highlighter-rouge">scala.concurrent</code> package.</p>
+
+<p><code class="highlighter-rouge">Duration</code> is the base class representing a length of time. It can be either finite or infinite.
+ A finite duration is represented with the <code class="highlighter-rouge">FiniteDuration</code> class, which is constructed from a <code class="highlighter-rouge">Long</code> length and
+ a <code class="highlighter-rouge">java.util.concurrent.TimeUnit</code>. Infinite durations, also extended from <code class="highlighter-rouge">Duration</code>,
+ exist in only two instances, <code class="highlighter-rouge">Duration.Inf</code> and <code class="highlighter-rouge">Duration.MinusInf</code>. The library also
+ provides several <code class="highlighter-rouge">Duration</code> subclasses for implicit conversion purposes and those should
+ not be used.</p>
+
+<p>Abstract <code class="highlighter-rouge">Duration</code> contains methods that allow:</p>
+
+<ol>
+  <li>Conversion to different time units (<code class="highlighter-rouge">toNanos</code>, <code class="highlighter-rouge">toMicros</code>, <code class="highlighter-rouge">toMillis</code>,
+<code class="highlighter-rouge">toSeconds</code>, <code class="highlighter-rouge">toMinutes</code>, <code class="highlighter-rouge">toHours</code>, <code class="highlighter-rouge">toDays</code> and <code class="highlighter-rouge">toUnit(unit: TimeUnit)</code>).</li>
+  <li>Comparison of durations (<code class="highlighter-rouge">&lt;</code>, <code class="highlighter-rouge">&lt;=</code>, <code class="highlighter-rouge">&gt;</code> and <code class="highlighter-rouge">&gt;=</code>).</li>
+  <li>Arithmetic operations (<code class="highlighter-rouge">+</code>, <code class="highlighter-rouge">-</code>, <code class="highlighter-rouge">*</code>, <code class="highlighter-rouge">/</code> and <code class="highlighter-rouge">unary_-</code>).</li>
+  <li>Minimum and maximum between <code class="highlighter-rouge">this</code> duration and the one supplied in the argument (<code class="highlighter-rouge">min</code>, <code class="highlighter-rouge">max</code>).</li>
+  <li>Checking whether the duration is finite (<code class="highlighter-rouge">isFinite</code>).</li>
+</ol>
+
+<p><code class="highlighter-rouge">Duration</code> can be instantiated in the following ways:</p>
+
+<ol>
+  <li>Implicitly from types <code class="highlighter-rouge">Int</code> and <code class="highlighter-rouge">Long</code>, for example, <code class="highlighter-rouge">val d = 100 millis</code>.</li>
+  <li>By passing a <code class="highlighter-rouge">Long</code> length and a <code class="highlighter-rouge">java.util.concurrent.TimeUnit</code>,
+for example, <code class="highlighter-rouge">val d = Duration(100, MILLISECONDS)</code>.</li>
+  <li>By parsing a string that represent a time period, for example, <code class="highlighter-rouge">val d = Duration("1.2 µs")</code>.</li>
+</ol>
+
+<p>Duration also provides <code class="highlighter-rouge">unapply</code> methods so it can be used in pattern matching constructs.
+Examples:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code class="hljs scala"><span class="hljs-keyword">import</span> scala.concurrent.duration._
+<span class="hljs-keyword">import</span> java.util.concurrent.<span class="hljs-type">TimeUnit</span>._
+
+<span class="hljs-comment">// instantiation</span>
+<span class="hljs-keyword">val</span> d1 = <span class="hljs-type">Duration</span>(<span class="hljs-number">100</span>, <span class="hljs-type">MILLISECONDS</span>) <span class="hljs-comment">// from Long and TimeUnit</span>
+<span class="hljs-keyword">val</span> d2 = <span class="hljs-type">Duration</span>(<span class="hljs-number">100</span>, <span class="hljs-string">"millis"</span>) <span class="hljs-comment">// from Long and String</span>
+<span class="hljs-keyword">val</span> d3 = <span class="hljs-number">100</span> millis <span class="hljs-comment">// implicitly from Long, Int or Double</span>
+<span class="hljs-keyword">val</span> d4 = <span class="hljs-type">Duration</span>(<span class="hljs-string">"1.2 µs"</span>) <span class="hljs-comment">// from String</span>
+
+<span class="hljs-comment">// pattern matching</span>
+<span class="hljs-keyword">val</span> <span class="hljs-type">Duration</span>(length, unit) = <span class="hljs-number">5</span> millis
+</code></pre></div></div>
+
+				</div>
+
+				<div class="content-contributors">
+    <h3>Contributors to this page:</h3>
+    <div id="contributors" class="contributors-container"><div><img src="./Futures and Promises _ Scala Documentation_files/19166236"><a href="https://github.com/komainu8">komainu8</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/16135250"><a href="https://github.com/iamsurajgharat">iamsurajgharat</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/Akhtyam Sakaev.png"><a>Akhtyam Sakaev</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/749912"><a href="https://github.com/sergeyh">sergeyh</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/9450469"><a href="https://github.com/dsbos">dsbos</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/5642392"><a href="https://github.com/aa8y">aa8y</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/15064985"><a href="https://github.com/xingyif">xingyif</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/161079"><a href="https://github.com/SethTisue">SethTisue</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/16550752"><a href="https://github.com/bartecheck">bartecheck</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/23110212"><a href="https://github.com/iwalt">iwalt</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/32205350"><a href="https://github.com/jeis2497052">jeis2497052</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/2862039"><a href="https://github.com/giftig">giftig</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/1454093"><a href="https://github.com/evanboho">evanboho</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/358615"><a href="https://github.com/ashawley">ashawley</a></div><div><img src="./Futures and Promises _ Scala Documentation_files/687163"><a href="https://github.com/heathermiller">heathermiller</a></div></div>
+</div>
+
+			</div>
+		</div>
+
+		<!-- TOC -->
+		<div class="content-nav">
+	<div class="inner-box sidebar-toc-wrapper" style="">
+		<h5 class="contents">Contents</h5>
+		<div class="inner-toc" id="sidebar-toc">
+      <div id="toc"><ul><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#introduction" class="scroll">Introduction</a></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#execution-context" class="scroll">Execution Context</a></li><li style="list-style: none;"><ul><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#the-global-execution-context" class="scroll">The Global Execution Context</a></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#adapting-a-java-executor" class="scroll">Adapting a Java Executor</a></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#synchronous-execution-context" class="scroll">Synchronous Execution Context</a></li></ul></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#futures" class="scroll">Futures</a></li><li style="list-style: none;"><ul><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#callbacks" class="scroll">Callbacks</a></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#functional-composition-and-for-comprehensions" class="scroll">Functional Composition and For-Comprehensions</a></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#projections" class="scroll">Projections</a></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#extending-futures" class="scroll">Extending Futures</a></li></ul></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#blocking" class="scroll">Blocking</a></li><li style="list-style: none;"><ul><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#blocking-inside-a-future" class="scroll">Blocking inside a Future</a></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#blocking-outside-the-future" class="scroll">Blocking outside the Future</a></li></ul></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#exceptions" class="scroll">Exceptions</a></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#promises" class="scroll">Promises</a></li><li><a href="https://docs.scala-lang.org/overviews/core/futures.html#utilities" class="scroll">Utilities</a></li></ul></div>
+      
+        <ul id="available-languages" style="display: none;"></ul>
+      
+		</div>
+		<hr>
+		<div class="help-us"><a href="https://github.com/scala/docs.scala-lang/blob/master/_overviews/core/futures.md"><i class="fa fa-pencil" aria-hidden="true"></i> Problem with this page?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please help us fix it!</a></div>
+	</div>
+</div>
+
+	</div>
+</section>
+
+
+</main>
+
+<footer id="site-footer">
+    <div class="wrap">
+      <div class="site-footer-top">
+        
+          <ul class="documentation">
+            <li><h3>Documentation</h3></li>
+            
+              <li><a href="https://docs.scala-lang.org/getting-started.html">Getting Started</a></li>
+            
+              <li><a href="https://www.scala-lang.org/api/current/index.html">API</a></li>
+            
+              <li><a href="https://docs.scala-lang.org/overviews">Overviews/Guides</a></li>
+            
+              <li><a href="http://scala-lang.org/files/archive/spec/2.13/">Language Specification</a></li>
+            
+          </ul>
+        
+          <ul class="download">
+            <li><h3>Download</h3></li>
+            
+              <li><a href="http://scala-lang.org/download/">Current Version</a></li>
+            
+              <li><a href="http://scala-lang.org/download/all.html">All versions</a></li>
+            
+          </ul>
+        
+          <ul class="community">
+            <li><h3>Community</h3></li>
+            
+              <li><a href="http://scala-lang.org/community/">Community</a></li>
+            
+              <li><a href="http://scala-lang.org/community/index.html#mailing-lists">Mailing Lists</a></li>
+            
+              <li><a href="http://scala-lang.org/community/index.html#chat-rooms">Chat Rooms &amp; More</a></li>
+            
+              <li><a href="http://scala-lang.org/community/index.html#community-libraries-and-tools">Libraries and Tools</a></li>
+            
+              <li><a href="http://scala.epfl.ch/">The Scala Center</a></li>
+            
+          </ul>
+        
+          <ul class="contribute">
+            <li><h3>Contribute</h3></li>
+            
+              <li><a href="http://scala-lang.org/contribute/">How to help</a></li>
+            
+              <li><a href="http://scala-lang.org/contribute/bug-reporting-guide.html">Report an Issue</a></li>
+            
+          </ul>
+        
+          <ul class="scala">
+            <li><h3>Scala</h3></li>
+            
+              <li><a href="http://scala-lang.org/blog/">Blog</a></li>
+            
+              <li><a href="http://scala-lang.org/conduct/">Code of Conduct</a></li>
+            
+              <li><a href="http://scala-lang.org/license/">License</a></li>
+            
+          </ul>
+        
+          <ul class="social">
+            <li><h3>Social</h3></li>
+            
+              <li><a href="https://github.com/scala/scala">GitHub</a></li>
+            
+              <li><a href="https://twitter.com/scala_lang">Twitter</a></li>
+            
+          </ul>
+        
+      </div>
+      <div class="site-footer-bottom">
+        <p></p>
+        <img src="./Futures and Promises _ Scala Documentation_files/scala-logo-white.png" alt="">
+      </div>
+    </div>
+    <a class="back-to-top in" href="https://docs.scala-lang.org/overviews/core/futures.html#" id="scroll-to-top-btn" style="display: inline;">
+      <i class="fa fa-angle-up"></i>
+    </a>
+</footer>
+
+<!-- jquery -->
+<script src="./Futures and Promises _ Scala Documentation_files/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
+<script>(window.jQuery) || document.write('<script src="/scripts/jquery-3.1.1.min.js"><\/script>');</script>
+<script src="./Futures and Promises _ Scala Documentation_files/jquery.autocomplete.js" type="text/javascript"></script>
+
+<!-- moment js -->
+<script src="./Futures and Promises _ Scala Documentation_files/moment.min.js" type="text/javascript"></script>
+
+<!-- tweet feed -->
+<script src="./Futures and Promises _ Scala Documentation_files/tweetMachine-update.js" type="text/javascript"></script>
+
+<!-- prettify js -->
+<script src="./Futures and Promises _ Scala Documentation_files/prettify.js" type="text/javascript"></script>
+<script src="./Futures and Promises _ Scala Documentation_files/lang-scala.js" type="text/javascript"></script>
+
+<!-- unslider js -->
+<script src="./Futures and Promises _ Scala Documentation_files/unslider.js" type="text/javascript"></script>
+
+<!-- Highlight -->
+<script src="./Futures and Promises _ Scala Documentation_files/highlight.min.js" type="text/javascript"></script>
+<script src="./Futures and Promises _ Scala Documentation_files/scala.min.js" type="text/javascript"></script>
+<script src="./Futures and Promises _ Scala Documentation_files/java.min.js" type="text/javascript"></script>
+
+<!-- CodeMirror -->
+<script src="./Futures and Promises _ Scala Documentation_files/codemirror.js" type="text/javascript"></script>
+<script src="./Futures and Promises _ Scala Documentation_files/clike.js" type="text/javascript"></script>
+
+<!-- TOC -->
+<script src="./Futures and Promises _ Scala Documentation_files/toc.js" type="text/javascript"></script>
+
+<!-- Blog search -->
+<script src="./Futures and Promises _ Scala Documentation_files/jekyll.search.min.js" type="text/javascript"></script>
+
+<!-- Custom JavaScript -->
+<script src="./Futures and Promises _ Scala Documentation_files/functions.js" type="text/javascript"></script>
+
+
+
+<!-- Alogolia search for doc -->
+<script type="text/javascript" src="./Futures and Promises _ Scala Documentation_files/docsearch.min.js"></script>
+<script type="text/javascript"> docsearch({
+apiKey: 'fbc439670f5d4e3730cdcb715c359391',
+indexName: 'scala-lang',
+inputSelector: '#doc-search-bar',
+algoliaOptions: { 'facetFilters': ["language:en"] },
+debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+
+
+
+</body></html>

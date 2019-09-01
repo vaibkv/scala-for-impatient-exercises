@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!-- saved from url=(0117)https://danielwestheide.com/blog/2013/01/16/the-neophytes-guide-to-scala-part-9-promises-and-futures-in-practice.html -->
+<html class="js video maskImage placeholder" lang="en"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>The Neophyte's Guide to Scala Part 9: Promises and Futures in practice - Daniel Westheide</title>
+  <meta name="author" content="Daniel Westheide">
+
+  
+  <meta name="description" content="In the previous article in this series, I introduced you to the Future type, its underlying paradigm, and how to put it to use to write highly …">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+  
+  <link rel="canonical" href="https://danielwestheide.com/blog/2013/01/16/the-neophytes-guide-to-scala-part-9-promises-and-futures-in-practice.html">
+  <link href="https://danielwestheide.com/favicon.png" rel="icon">
+  <link href="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/modernizr-2.0.js"></script>
+  <script src="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/ender.js"></script>
+  <script src="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/octopress.js" type="text/javascript"></script>
+  <link href="https://feeds.feedburner.com/danielwestheide" rel="alternate" title="Daniel Westheide" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/css" rel="stylesheet" type="text/css">
+<link href="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/css(1)" rel="stylesheet" type="text/css">
+
+  
+
+<script type="text/javascript" async="" src="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/embed.js"></script><link rel="prefetch" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.c46a5b3df6acec9d5cde6bf8b61aaf6e.css"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.57d935b03ca64a8fc2ae95b8d550f132.js"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.10adfde1a6e883b828255fddc56fa508.js"><link rel="prefetch" as="script" href="https://disqus.com/next/config.js"><script src="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/alfalfalfa.0823c767a3bc925f628afd9bed26c958.js" async="" charset="UTF-8"></script></head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="https://danielwestheide.com/">Daniel Westheide</a></h1>
+  
+    <h2>on making software</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="https://feeds.feedburner.com/danielwestheide" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:danielwestheide.com">
+    <input class="search" type="text" name="q" results="0" placeholder="Search">
+  </fieldset><fieldset class="mobile-nav"><select><option value="">Navigate…</option><option value="https://danielwestheide.com/">» Blog</option><option value="https://danielwestheide.com/blog/archives">» Archives</option><option value="https://danielwestheide.com/scala/neophytes.html">» The Neophyte's Guide to Scala</option><option value="https://danielwestheide.com/talks">» Talks</option><option value="https://feeds.feedburner.com/danielwestheide">» RSS</option></select></fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="https://danielwestheide.com/">Blog</a></li>
+  <li><a href="https://danielwestheide.com/blog/archives">Archives</a></li>
+  <li><a href="https://danielwestheide.com/scala/neophytes.html">The Neophyte's Guide to Scala</a></li>
+  <li><a href="https://danielwestheide.com/talks">Talks</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">The Neophyte's Guide to Scala Part 9: Promises and Futures in Practice</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-16T06:45:00+01:00" pubdate="" data-updated="true">Jan 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In the <a href="http://danielwestheide.com/blog/2013/01/09/the-neophytes-guide-to-scala-part-8-welcome-to-the-future.html">previous article in this series</a>, I introduced you to the <code>Future</code> type, its underlying paradigm, and how to put it to use to write highly readable and composable asynchronously executing code.</p>
+
+<p>In that article, I also mentioned that <code>Future</code> is really only one piece of the puzzle: It’s a read-only type that allows you to work with the values it will compute and handle failure to do so in an elegant way. In order for you to be able to read a computed value from a <code>Future</code>, however, there must be a way for some other part of your software to put that value there. In this post, I will show you how this is done by means of the <code>Promise</code> type, followed by some guidance on how to use futures and promises in practice.</p>
+
+<h2>Promises</h2>
+
+<p>In the previous article on futures, we had a sequential block of code that we passed to the <code>apply</code> method of the <code>Future</code> companion object, and, given an <code>ExecutionContext</code> was in scope, it magically executed that code block asynchronously, returning its result as a <code>Future</code>.</p>
+
+<p>While this is an easy way to get a <code>Future</code> when you want one, there is an alternative way to create <code>Future</code> instances and have them complete with a success or failure. Where <code>Future</code> provides an interface exclusively for <em>querying</em>, <code>Promise</code> is a companion type that allows you to complete a <code>Future</code> by putting a value into it. This can be done exactly once. Once a <code>Promise</code> has been completed, it’s not possible to change it any more.</p>
+
+<p>A <code>Promise</code> instance is always linked to exactly one instance of <code>Future</code>. If you call the <code>apply</code> method of <code>Future</code> again in the REPL, you will indeed notice that the <code>Future</code> returned is a <code>Promise</code>, too:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="k">import</span> <span class="nn">concurrent.Future</span>
+</span><span class="line"><span class="k">import</span> <span class="nn">concurrent.ExecutionContext.Implicits.global</span>
+</span><span class="line"><span class="k">val</span> <span class="n">f</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Future</span> <span class="o">{</span> <span class="s">"Hello world!"</span> <span class="o">}</span>
+</span><span class="line"><span class="c1">// REPL output: </span>
+</span><span class="line"><span class="c1">// f: scala.concurrent.Future[String] = scala.concurrent.impl.Promise$DefaultPromise@793e6657</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>The object you get back is a <code>DefaultPromise</code>, which implements both <code>Future</code> and <code>Promise</code>. This is an implementation detail, however. The <code>Future</code> and the <code>Promise</code> to which it belongs may very well be separate objects.</p>
+
+<p>What this little example shows is that there is obviously no way to complete a <code>Future</code> other than through a <code>Promise</code> – the <code>apply</code> method on <code>Future</code> is just a nice helper function that shields you from this.</p>
+
+<p>Now, let’s see how we can get our hands dirty and work with the <code>Promise</code> type directly.</p>
+
+<h3>Promising a rosy future</h3>
+
+<p>When talking about promises that may be fulfilled or not, an obvious example domain is that of politicians, elections, campaign pledges, and legislative periods.</p>
+
+<p>Suppose the politicians that then got elected into office promised their voters a tax cut. This can be represented as a <code>Promise[TaxCut]</code>, which you can create by calling the <code>apply</code> method on the <code>Promise</code> companion object, like so:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="k">import</span> <span class="nn">concurrent.Promise</span>
+</span><span class="line"><span class="k">case</span> <span class="k">class</span> <span class="nc">TaxCut</span><span class="o">(</span><span class="n">reduction</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span>
+</span><span class="line"><span class="c1">// either give the type as a type parameter to the factory method:</span>
+</span><span class="line"><span class="k">val</span> <span class="n">taxcut</span> <span class="k">=</span> <span class="nc">Promise</span><span class="o">[</span><span class="kt">TaxCut</span><span class="o">]()</span>
+</span><span class="line"><span class="c1">// or give the compiler a hint by specifying the type of your val:</span>
+</span><span class="line"><span class="k">val</span> <span class="n">taxcut2</span><span class="k">:</span> <span class="kt">Promise</span><span class="o">[</span><span class="kt">TaxCut</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Promise</span><span class="o">()</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Once you have created a <code>Promise</code>, you can get the <code>Future</code> belonging to it by calling the <code>future</code> method on the <code>Promise</code> instance:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="k">val</span> <span class="n">taxcutF</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">TaxCut</span><span class="o">]</span> <span class="k">=</span> <span class="n">taxcut</span><span class="o">.</span><span class="n">future</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>The returned <code>Future</code> might not be the same object as the <code>Promise</code>, but calling the <code>future</code> method of a <code>Promise</code> multiple times will definitely always return the same object to make sure the one-to-one relationship between a <code>Promise</code> and its <code>Future</code> is preserved.</p>
+
+<h3>Completing a Promise</h3>
+
+<p>Once you have made a <code>Promise</code> and told the world that you will deliver on it in the forseeable <code>Future</code>, you better do your very best to make it happen.</p>
+
+<p>In Scala, you can complete a <code>Promise</code> either with a success or a failure.</p>
+
+<h4>Delivering on your Promise</h4>
+
+<p>To complete a <code>Promise</code> with a success, you call its <code>success</code> method, passing it the value that the <code>Future</code> associated with it is supposed to have:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="n">taxcut</span><span class="o">.</span><span class="n">success</span><span class="o">(</span><span class="nc">TaxCut</span><span class="o">(</span><span class="mi">20</span><span class="o">))</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Once you have done this, that <code>Promise</code> instance is no longer writable, and future attempts to do so will lead to an exception.</p>
+
+<p>Also, completing your <code>Promise</code> like this leads to the successful completion of the associated <code>Future</code>. Any success or completion handlers on that future will now be called, or if, for instance, you are mapping that future, the mapping function will now be executed.</p>
+
+<p>Usually, the completion of the <code>Promise</code> and the processing of the completed <code>Future</code> will not happen in the same thread. It’s more likely that you create your <code>Promise</code>, start computing its value in another thread and immediately return the uncompleted <code>Future</code> to the caller.</p>
+
+<p>To illustrate, let’s do something like that for our taxcut promise:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="k">object</span> <span class="nc">Government</span> <span class="o">{</span>
+</span><span class="line">  <span class="k">def</span> <span class="n">redeemCampaignPledge</span><span class="o">()</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">TaxCut</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="nc">Promise</span><span class="o">[</span><span class="kt">TaxCut</span><span class="o">]()</span>
+</span><span class="line">    <span class="nc">Future</span> <span class="o">{</span>
+</span><span class="line">      <span class="n">println</span><span class="o">(</span><span class="s">"Starting the new legislative period."</span><span class="o">)</span>
+</span><span class="line">      <span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">2000</span><span class="o">)</span>
+</span><span class="line">      <span class="n">p</span><span class="o">.</span><span class="n">success</span><span class="o">(</span><span class="nc">TaxCut</span><span class="o">(</span><span class="mi">20</span><span class="o">))</span>
+</span><span class="line">      <span class="n">println</span><span class="o">(</span><span class="s">"We reduced the taxes! You must reelect us!!!!1111"</span><span class="o">)</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">    <span class="n">p</span><span class="o">.</span><span class="n">future</span>
+</span><span class="line">  <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Please don’t get confused by the usage of the <code>apply</code> method of the <code>Future</code> companion object in this example. I’m just using it because it is so convenient for executing a block of code asynchronously. I could just as well have implemented the computation of the result (which involves a lot of sleeping) in a <code>Runnable</code> that is executed asynchrously by an <code>ExecutorService</code>, with a lot more boilerplate code. The point is that the <code>Promise</code> is not completed in the caller thread.</p>
+
+<p>Let’s redeem our campaign pledge then and add an <code>onComplete</code> callback function to our future:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="k">import</span> <span class="nn">scala.util.</span><span class="o">{</span><span class="nc">Success</span><span class="o">,</span> <span class="nc">Failure</span><span class="o">}</span>
+</span><span class="line"><span class="k">val</span> <span class="n">taxCutF</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">TaxCut</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Government</span><span class="o">.</span><span class="n">redeemCampaignPledge</span><span class="o">()</span>
+</span><span class="line">  <span class="n">println</span><span class="o">(</span><span class="s">"Now that they're elected, let's see if they remember their promises..."</span><span class="o">)</span>
+</span><span class="line">  <span class="n">taxCutF</span><span class="o">.</span><span class="n">onComplete</span> <span class="o">{</span>
+</span><span class="line">    <span class="k">case</span> <span class="nc">Success</span><span class="o">(</span><span class="nc">TaxCut</span><span class="o">(</span><span class="n">reduction</span><span class="o">))</span> <span class="k">=&gt;</span>
+</span><span class="line">      <span class="n">println</span><span class="o">(</span><span class="n">s</span><span class="s">"A miracle! They really cut our taxes by $reduction percentage points!"</span><span class="o">)</span>
+</span><span class="line">    <span class="k">case</span> <span class="nc">Failure</span><span class="o">(</span><span class="n">ex</span><span class="o">)</span> <span class="k">=&gt;</span>
+</span><span class="line">      <span class="n">println</span><span class="o">(</span><span class="n">s</span><span class="s">"They broke their promises! Again! Because of a ${ex.getMessage}"</span><span class="o">)</span>
+</span><span class="line">  <span class="o">}</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>If you try this out multiple times, you will see that the order of the console output is not deterministic. Eventually, the completion handler will be executed and run into the success case.</p>
+
+<h4>Breaking Promises like a sir</h4>
+
+<p>As a politician, you are pretty much used to not keeping your promises. As a Scala developer, you sometimes have no other choice, either. If that happens, you can still complete your <code>Promise</code> instance gracefully, by calling its <code>failure</code> method and passing it an exception:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="k">case</span> <span class="k">class</span> <span class="nc">LameExcuse</span><span class="o">(</span><span class="n">msg</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Exception</span><span class="o">(</span><span class="n">msg</span><span class="o">)</span>
+</span><span class="line"><span class="k">object</span> <span class="nc">Government</span> <span class="o">{</span>
+</span><span class="line">  <span class="k">def</span> <span class="n">redeemCampaignPledge</span><span class="o">()</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">TaxCut</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class="line">       <span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="nc">Promise</span><span class="o">[</span><span class="kt">TaxCut</span><span class="o">]()</span>
+</span><span class="line">       <span class="nc">Future</span> <span class="o">{</span>
+</span><span class="line">         <span class="n">println</span><span class="o">(</span><span class="s">"Starting the new legislative period."</span><span class="o">)</span>
+</span><span class="line">         <span class="nc">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">2000</span><span class="o">)</span>
+</span><span class="line">         <span class="n">p</span><span class="o">.</span><span class="n">failure</span><span class="o">(</span><span class="nc">LameExcuse</span><span class="o">(</span><span class="s">"global economy crisis"</span><span class="o">))</span>
+</span><span class="line">         <span class="n">println</span><span class="o">(</span><span class="s">"We didn't fulfill our promises, but surely they'll understand."</span><span class="o">)</span>
+</span><span class="line">       <span class="o">}</span>
+</span><span class="line">       <span class="n">p</span><span class="o">.</span><span class="n">future</span>
+</span><span class="line">     <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>This implementation of the <code>redeemCampaignPledge()</code> method will to lots of broken promises. Once you have completed a <code>Promise</code> with the <code>failure</code> method, it is no longer writable, just as is the case with the <code>success</code> method. The associated <code>Future</code> will now be completed with a <code>Failure</code>, too, so the callback function above would run into the failure case.</p>
+
+<p>If you already have a <code>Try</code>, you can also complete a <code>Promise</code> by calling its <code>complete</code> method. If the <code>Try</code> is a <code>Success</code>, the associated <code>Future</code> will be completed successfully, with the value inside the <code>Success</code>. If it’s a <code>Failure</code>, the <code>Future</code> will completed with that failure.</p>
+
+<h2>Future-based programming in practice</h2>
+
+<p>If you want to make use of the future-based paradigm in order to increase the scalability of your application, you have to design your application to be non-blocking from the ground-up, which basically means that the functions in all your application layers are asynchronous and return futures.</p>
+
+<p>A likely use case these days is that of developing a web application. If you are using a modern Scala web framework, it will allow you to return your responses as something like a <code>Future[Response]</code> instead of blocking and then returning your finished <code>Response</code>. This is important since it allows your web server to handle a huge number of open connections with a relatively low number of threads. By always giving your web server <code>Future[Response]</code>, you maximize the utilization of the web server’s dedicated thread pool.</p>
+
+<p>In the end, a service in your application might make multiple calls to your database layer and/or some external web service, receiving multiple futures, and then compose them to return a new <code>Future</code>, all in a very readable for comprehension, such as the one you saw in the previous article. The web layer will turn such a <code>Future</code> into a <code>Future[Response]</code>.</p>
+
+<p>However, how do you implement this in practice? There are are three different cases you have to consider:</p>
+
+<h3>Non-blocking IO</h3>
+
+<p>Your application will most certainly involve a lot of IO. For example, your web application will have to talk to a database, and it might act as a client that is calling other web services.</p>
+
+<p>If at all possible, make use of libraries that are based on Java’s non-blocking IO capabilities, either by using Java’s NIO API directly or through a library like Netty. Such libraries, too, can serve many connections with a reasonably-sized dedicated thread pool.</p>
+
+<p>Developing such a library yourself is one of the few places where directly working with the <code>Promise</code> type makes a lot of sense.</p>
+
+<h3>Blocking IO</h3>
+
+<p>Sometimes, there is no NIO-based library available. For instance, most database drivers you’ll find in the Java world nowadays are using blocking IO. If you made a query to your database with such a driver in order to respond to a HTTP request, that call would be made on a web server thread. To avoid that, place all the code talking to the database inside a <code>future</code> block, like so:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="c1">// get back a Future[ResultSet] or something similar:</span>
+</span><span class="line"><span class="nc">Future</span> <span class="o">{</span>
+</span><span class="line">  <span class="n">queryDB</span><span class="o">(</span><span class="n">query</span><span class="o">)</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>So far, we always used the implicitly available global <code>ExecutionContext</code> to execute such future blocks. It’s probably a good idea to create a dedicated <code>ExecutionContext</code> that you will have in scope in your database layer.</p>
+
+<p>You can create an <code>ExecutionContext</code> from a Java <code>ExecutorService</code>, which means you will be able to tune the thread pool for executing your database calls asynchronously independently from the rest of your application:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="k">import</span> <span class="nn">java.util.concurrent.Executors</span>
+</span><span class="line"><span class="k">import</span> <span class="nn">concurrent.ExecutionContext</span>
+</span><span class="line"><span class="k">val</span> <span class="n">executorService</span> <span class="k">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="n">newFixedThreadPool</span><span class="o">(</span><span class="mi">4</span><span class="o">)</span>
+</span><span class="line"><span class="k">val</span> <span class="n">executionContext</span> <span class="k">=</span> <span class="nc">ExecutionContext</span><span class="o">.</span><span class="n">fromExecutorService</span><span class="o">(</span><span class="n">executorService</span><span class="o">)</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h3>Long-running computations</h3>
+
+<p>Depending on the nature of your application, it will occasionally have to call long-running tasks that don’t involve any IO at all, which means they are CPU-bound. These, too, should not be executed by a web server thread. Hence, you should turn them into <code>Futures</code>, too:</p>
+
+<figure class="code"> <div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="scala"><span class="line"><span class="nc">Future</span> <span class="o">{</span>
+</span><span class="line">  <span class="n">longRunningComputation</span><span class="o">(</span><span class="n">data</span><span class="o">,</span> <span class="n">moreData</span><span class="o">)</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Again, if you have long-running computations, having them run in a separate <code>ExecutionContext</code> for CPU-bound tasks is a good idea. How to tune your various thread pools is highly dependent on your individual application and beyond the scope of this article.</p>
+
+<h2>Summary</h2>
+
+<p>In this article, we looked at promises, the writable part of the future-based concurrency paradigm, and how to use them to complete a <code>Future</code>, followed by some advice on how to put futures to use in practice.</p>
+
+<p>In the next part of this series, we are taking a step back from concurrency issues and examine how functional programming in Scala can help you to make your code more reusable, a claim that has long been associated with object-oriented programming.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Daniel Westheide</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-16T06:45:00+01:00" pubdate="" data-updated="true">Jan 16<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class="category" href="https://danielwestheide.com/blog/tags/concurrency/">concurrency</a>, <a class="category" href="https://danielwestheide.com/blog/tags/programming/">programming</a>, <a class="category" href="https://danielwestheide.com/blog/tags/scala/">scala</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="https://danielwestheide.com/blog/2013/01/09/the-neophytes-guide-to-scala-part-8-welcome-to-the-future.html" title="Previous Post: The Neophyte&#39;s Guide to Scala Part 8: Welcome to the Future">« The Neophyte's Guide to Scala Part 8: Welcome to the Future</a>
+      
+      
+        <a class="basic-alignment right" href="https://danielwestheide.com/blog/2013/01/23/the-neophytes-guide-to-scala-part-10-staying-dry-with-higher-order-functions.html" title="Next Post: The Neophyte&#39;s Guide to Scala Part 10: Staying DRY with higher-order functions">The Neophyte's Guide to Scala Part 10: Staying DRY with higher-order functions »</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><iframe id="dsq-app2599" name="dsq-app2599" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 6523px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+  </section>
+
+</div>
+
+<aside class="sidebar thirds">
+  
+    <section id="about" class="first odd">
+  <h1>About me</h1>
+  <p>I'm Daniel Westheide, a software developer from Berlin, Germany.</p>
+  <img src="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/portrait.jpeg" alt="dw" width="100">
+  <p>I am working as a senior consultant at <a href="https://www.innoq.com/en/">INNOQ</a>.</p>
+  <p>On this blog, I'm discussing functional programming, usability, as well as
+     anything related to the software development process.</p>
+  <p>You can get in touch via <a href="mailto:dwestheide@googlemail.com">email</a>. I can also be found on Twitter as <a href="https://twitter.com/kaffeecoder">@kaffeecoder</a>.
+   </p>
+   <p>More content published by me <a href="https://www.innoq.com/en/timeline/?person=danielw">can be found on the INNOQ website</a>.</p>
+</section>
+<section class="even">
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="https://danielwestheide.com/blog/2018/12/07/the-complexity-trap.html">The Complexity Trap: Think Before You Leap</a>
+      </li>
+    
+      <li class="post">
+        <a href="https://danielwestheide.com/blog/2017/10/31/introducing-kontextfrei.html">Introducing kontextfrei</a>
+      </li>
+    
+      <li class="post">
+        <a href="https://danielwestheide.com/blog/2017/01/16/the-empathic-programmer.html">The Empathic Programmer</a>
+      </li>
+    
+      <li class="post">
+        <a href="https://danielwestheide.com/blog/2016/04/26/when-option-is-not-good-enough.html">When Option is not good enough</a>
+      </li>
+    
+      <li class="post">
+        <a href="https://danielwestheide.com/blog/2015/06/28/put-your-writes-where-your-master-is-compile-time-restriction-of-slick-effect-types.html">Put your writes where your master is: Compile-time restriction of Slick effect types</a>
+      </li>
+    
+  </ul>
+</section>
+<section id="neophytes-book" class="odd">
+  <h1>My book</h1>
+  <a href="https://leanpub.com/theneophytesguidetoscala"><img src="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/neophyte-cover-small.jpg" with="200" alt="Neophyte&#39;s Guide Cover"></a>
+  Get <em>The Neophyte's Guide to Scala</em> e-book <a href="https://leanpub.com/theneophytesguidetoscala">at LeanPub</a>.
+</section>
+
+  
+</aside>
+
+
+    <span class="toggle-sidebar"></span></div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright © 2019 - Daniel Westheide -
+  <span class="credit">Powered by <a href="http://octopress.org/">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'danielwestheide';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://danielwestheide.com/blog/2013/01/16/the-neophytes-guide-to-scala-part-9-promises-and-futures-in-practice.html';
+        var disqus_url = 'https://danielwestheide.com/blog/2013/01/16/the-neophytes-guide-to-scala-part-9-promises-and-futures-in-practice.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<iframe style="display: none;" src="./The Neophyte&#39;s Guide to Scala Part 9_ Promises and Futures in practice - Daniel Westheide_files/saved_resource(1).html"></iframe></body></html>
